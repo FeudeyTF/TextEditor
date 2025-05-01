@@ -23,6 +23,8 @@ void OnExitButtonClick(Control* sender, MouseEventArgs args)
 	ExitProcess(0);
 }
 
+
+
 TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 {
 	_inputConsole = inputConsole;
@@ -30,9 +32,9 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	_oldConsoleMode = 0;
 
 	vector<Button*> navbarButtons{};
-	Button* fileButton = new Button("File", 0, 0, 0, 0, NAVBAR_COLOR);
-	Button* saveButton = new Button("Save", 0, 0, 0, 0, NAVBAR_COLOR);
-	Button* exitButton = new Button("Exit", 0, 0, 0, 0, NAVBAR_COLOR);
+	Button* fileButton = new Button("File", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
+	Button* saveButton = new Button("Save", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
+	Button* exitButton = new Button("Exit", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
 	saveButton->OnClick += OnSaveButtonClick;
 	exitButton->OnClick += OnExitButtonClick;
 	navbarButtons.push_back(fileButton);
@@ -43,10 +45,18 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 		button->OnMouseEnter += OnButtonEnter;
 		button->OnMouseLeave += OnButtonLeave;
 	}
-	NavbarMenu* menu = new NavbarMenu(0, 0, 120, 1, NAVBAR_COLOR, navbarButtons);
 
-	Box* box = new Box(0, 1, 120, 29, true, true, EDITOR_COLOR);
-	Input* input = new Input(1, 2, 119, 29, EDITOR_COLOR);
+	Button* fileMenuSaveButton = new Button("Save", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
+	fileMenuSaveButton->OnMouseEnter += OnButtonEnter;
+	fileMenuSaveButton->OnMouseLeave += OnButtonLeave;
+
+	DropdownMenu* fileMenu = new DropdownMenu(RectangleBox{ 0, 1, 20, 10 }, BACKGROUND_YELLOW, { fileMenuSaveButton });
+	DropdownMenu* saveMenu = new DropdownMenu(RectangleBox{ 10, 1, 20, 10 }, BACKGROUND_YELLOW, { exitButton });
+
+	NavbarMenu* menu = new NavbarMenu(RectangleBox{ 0, 0, 120, 1 }, NAVBAR_COLOR, navbarButtons, { fileMenu, saveMenu });
+
+	Box* box = new Box(RectangleBox{ 0, 1, 120, 29 }, true, true, EDITOR_COLOR);
+	Input* input = new Input(RectangleBox{ 1, 2, 119, 29 }, EDITOR_COLOR);
 	_controls.push_back(menu);
 	_controls.push_back(box);
 	_controls.push_back(input);
@@ -74,7 +84,7 @@ void TextEditor::Run()
 		return;
 
 	for (Control* control : _controls)
-		control->Draw(_outputConsole);
+		control->Draw({ 0, 0, 120, 30 }, _outputConsole);
 
 	while (true)
 	{
@@ -110,7 +120,7 @@ void TextEditor::HandleMouseEvent(MOUSE_EVENT_RECORD args)
 		Control* updatedControl = control->HandleMouseEvent(MouseEventArgs(args, _outputConsole));
 		if (updatedControl != nullptr)
 		{
-			updatedControl->Draw(_outputConsole);
+			updatedControl->Draw({ 0, 0, 120, 30 }, _outputConsole);
 			return;
 		}
 	}
@@ -124,4 +134,10 @@ void TextEditor::HandleKeyEvent(KEY_EVENT_RECORD args)
 		if (updatedControl != nullptr)
 			return;
 	}
+}
+
+void TextEditor::Invalidate(RectangleBox rectangle)
+{
+	for (Control* control : _controls)
+		control->Draw(rectangle, _outputConsole);
 }

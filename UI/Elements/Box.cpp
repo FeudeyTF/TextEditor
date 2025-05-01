@@ -1,19 +1,15 @@
 #include "Box.h"
 
-Box::Box(int x, int y, int width, int height, bool fill, bool createBorders, Color color)
+Box::Box(RectangleBox rectangle, bool fill, bool createBorders, Color color) : Control(rectangle, color)
 {
 	Fill = fill;
 	CreateBorders = createBorders;
-	X = x;
-	Y = y;
-	Width = width;
-	Height = height;
-	BackgroundColor = color;
 }
 
-void Box::Draw(HANDLE console)
+void Box::Draw(RectangleBox rectangle, HANDLE console)
 {
-	DrawBox(X, Y, Width, Height, BackgroundColor, Fill, console);
+	RectangleBox inter = rectangle.Intersection(Rectangle);
+	DrawBox(inter, BackgroundColor, Fill, console);
 }
 
 Control* Box::HandleMouseEvent(MouseEventArgs args)

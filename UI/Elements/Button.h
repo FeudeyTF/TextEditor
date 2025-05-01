@@ -5,8 +5,8 @@ class Button : public Control
 {
     public: string Text;
 
-    public: Button(string text, int x, int y, int width, int height, Color backgroundColor);
+    public: Button(string text, RectangleBox rectangle, Color backgroundColor);
 
-    public: virtual void Draw(HANDLE console) override;
+    public: virtual void Draw(RectangleBox rectangle, HANDLE console) override;
 };
 

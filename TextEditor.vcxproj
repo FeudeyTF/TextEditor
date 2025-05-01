@@ -127,6 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\Rectangle.cpp" />
+    <ClCompile Include="UI\Elements\DropdownMenu.cpp" />
     <ClCompile Include="UI\Elements\Input.cpp" />
     <ClCompile Include="UI\EventArgs\KeyEventArgs.cpp" />
     <ClCompile Include="UI\Elements\Box.cpp" />
@@ -140,6 +142,8 @@
     <ClCompile Include="UI\Forms\TextEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\Rectangle.h" />
+    <ClInclude Include="UI\Elements\DropdownMenu.h" />
     <ClInclude Include="UI\Elements\Input.h" />
     <ClInclude Include="UI\EventArgs\KeyEventArgs.h" />
     <ClInclude Include="UI\Elements\Box.h" />

@@ -1,18 +1,14 @@
 #include "Button.h";
 
-Button::Button(string text, int x, int y, int width, int height, Color backgroundColor)
+Button::Button(string text, RectangleBox rectangle, Color color) : Control(rectangle, color)
 {
 	Text = text;
-	X = x;
-	Y = y;
-	Width = width;
-	Height = height;
-	BackgroundColor = backgroundColor;
 }
 
-void Button::Draw(HANDLE console)
+void Button::Draw(RectangleBox rectangle, HANDLE console)
 {
-	DrawRectangle(X, Y, Width, Height, BackgroundColor, console);
+	auto inter = Rectangle.Intersection(rectangle);
+	DrawRectangle(inter, BackgroundColor, console);
 	if (Text != "")
-		CreateText(X + (Width - Text.size()) / 2, Y + Height / 2, Text, BackgroundColor, console);
+		CreateText(Rectangle.X + (Rectangle.Width - Text.size()) / 2, Rectangle.Y + Rectangle.Height / 2, Text, BackgroundColor, console);
 }

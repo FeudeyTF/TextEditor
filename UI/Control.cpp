@@ -1,9 +1,15 @@
 #include "Control.h";
 
-void Control::Draw(HANDLE console)
+Control::Control(RectangleBox rectangle, Color color)
 {
+	Rectangle = rectangle;
+	BackgroundColor = color;
+	_mouseInControl = false;
 }
 
+void Control::Draw(RectangleBox rectangle, HANDLE console)
+{
+}
 
 Control* Control::HandleKeyEvent(KeyEventArgs args)
 {
@@ -51,15 +57,15 @@ Control* Control::HandleMouseEvent(MouseEventArgs args)
 
 bool Control::IsPointInControl(int x, int y)
 {
-	return x >= X && y >= Y && x < X + Width && y < Y + Height;
+	return Rectangle.PointInRectangle(x, y);
 }
 
-void Control::DrawRectangle(int x, int y, int width, int height, Color color, HANDLE console)
+void Control::DrawRectangle(RectangleBox rectangle, Color color, HANDLE console)
 {
 	SetConsoleTextAttribute(console, color);
-	for (int i = X; i < X + Width; i++)
+	for (int i = rectangle.X; i < rectangle.X + rectangle.Width; i++)
 	{
-		for (int j = Y; j < Y + Height; j++)
+		for (int j = rectangle.Y; j < rectangle.Y + rectangle.Height; j++)
 		{
 			SetConsoleCursorPosition(console, { (short)i , (short)j });
 			cout << " ";
@@ -68,8 +74,13 @@ void Control::DrawRectangle(int x, int y, int width, int height, Color color, HA
 	SetConsoleTextAttribute(console, DEFAULT_COLOR);
 }
 
-void Control::DrawBox(int x, int y, int width, int height, Color color, bool fill, HANDLE console)
+void Control::DrawBox(RectangleBox rectangle, Color color, bool fill, HANDLE console)
 {
+	int x = rectangle.X;
+	int y = rectangle.Y;
+	int width = rectangle.Width;
+	int height = rectangle.Height;
+
 	SetConsoleTextAttribute(console, color);
 	for (short i = x; i < x + width; i++)
 	{

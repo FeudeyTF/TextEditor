@@ -5,9 +5,11 @@ typedef COORD Point;
 
 class Input : public Control
 {
+	public: string Text;
+
 	private: Point _inputPoint;
 
-	public: Input(int x, int y, int width, int height, Color color);
+	public: Input(RectangleBox rectangle, Color color);
 
 	public: virtual Control* HandleMouseEvent(MouseEventArgs args) override;
 

@@ -1,0 +1,19 @@
+#pragma once
+class RectangleBox  
+{  
+	public: int X;  
+
+	public: int Y;  
+
+	public: int Width;  
+
+	public: int Height;
+
+	public: RectangleBox() : X(0), Y(0), Width(0), Height(0) {}
+
+	public: RectangleBox(int x, int y, int width, int height);  
+
+	public: bool PointInRectangle(int x, int y);  
+
+	public: RectangleBox Intersection(RectangleBox rectangle);  
+};

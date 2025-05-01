@@ -4,21 +4,15 @@
 #include <windows.h>
 #include "Color.h";
 #include "../Event/Event.h";
-#include "EventArgs/MouseEventArgs.h";
-#include "EventArgs/KeyEventArgs.h";
+#include "EventArgs/MouseEventArgs.h"
+#include "EventArgs/KeyEventArgs.h"
+#include "Rectangle.h"
 
 using namespace std;
-class MouseEventArgs;
 
 class Control
 {
-	public: int X;
-
-	public: int Y;
-
-	public: int Width;
-
-	public: int Height;
+	public: RectangleBox Rectangle;
 
 	public: Color BackgroundColor;
 
@@ -30,7 +24,9 @@ class Control
 
 	private: bool _mouseInControl;
 
-	public: virtual void Draw(HANDLE console);
+	public: Control(RectangleBox rectangle, Color color);
+
+	public: virtual void Draw(RectangleBox rectangle, HANDLE console);
 
 	public: virtual Control* HandleMouseEvent(MouseEventArgs args);
 
@@ -38,9 +34,9 @@ class Control
 
 	protected: bool IsPointInControl(int x, int y);
 
-	protected: void DrawRectangle(int x, int y, int width, int height, Color color, HANDLE console);
+	protected: void DrawRectangle(RectangleBox rectangle, Color color, HANDLE console);
 
-	protected: void DrawBox(int x, int y, int width, int height, Color color, bool fill, HANDLE console);
+	protected: void DrawBox(RectangleBox rectangle, Color color, bool fill, HANDLE console);
 
 	protected: void CreateText(int x, int y, string text, Color color, HANDLE console);
 };
