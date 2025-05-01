@@ -1,7 +1,8 @@
 #pragma once
 #include "../Elements/NavbarMenu.h"
 #include "../Elements/Box.h"
-typedef COORD Point;
+#include "../Elements/Input.h"
+
 
 class TextEditor
 {
@@ -12,8 +13,6 @@ class TextEditor
     private: HANDLE _inputConsole;
 
     private: DWORD _oldConsoleMode;
-
-    private: Point _inputPoint;
 
     public: TextEditor(HANDLE outputConsole, HANDLE inputConsole);
 

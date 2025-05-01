@@ -13,7 +13,7 @@ class KeyEventArgs
 
 	public: int VirtualScanCode;
 
-	public: char Type;
+	public: char Char;
 
 	public: HANDLE OutputConsole;
 

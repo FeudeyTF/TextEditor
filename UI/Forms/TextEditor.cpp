@@ -28,7 +28,6 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	_inputConsole = inputConsole;
 	_outputConsole = outputConsole;
 	_oldConsoleMode = 0;
-	_inputPoint = { 1, 2 };
 
 	vector<Button*> navbarButtons{};
 	Button* fileButton = new Button("File", 0, 0, 0, 0, NAVBAR_COLOR);
@@ -47,9 +46,10 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	NavbarMenu* menu = new NavbarMenu(0, 0, 120, 1, NAVBAR_COLOR, navbarButtons);
 
 	Box* box = new Box(0, 1, 120, 29, true, true, EDITOR_COLOR);
-
+	Input* input = new Input(1, 2, 119, 29, EDITOR_COLOR);
 	_controls.push_back(menu);
 	_controls.push_back(box);
+	_controls.push_back(input);
 }
 
 TextEditor::~TextEditor()
@@ -78,7 +78,6 @@ void TextEditor::Run()
 
 	while (true)
 	{
-		SetConsoleCursorPosition(_outputConsole, _inputPoint );
 		if (!ReadConsoleInput(_inputConsole, inputBuffer, 128, &recordsCount))
 			return;
 
@@ -119,36 +118,10 @@ void TextEditor::HandleMouseEvent(MOUSE_EVENT_RECORD args)
 
 void TextEditor::HandleKeyEvent(KEY_EVENT_RECORD args)
 {
-	if (args.bKeyDown)
+	for (Control* control : _controls)
 	{
-		SetConsoleTextAttribute(_outputConsole, EDITOR_COLOR);
-		if (args.uChar.AsciiChar > 31)
-		{
-			cout << args.uChar.AsciiChar;
-			_inputPoint.X++;
-		}
-		else if (args.uChar.AsciiChar == '\r')
-		{
-			_inputPoint.Y++;
-			_inputPoint.X = 1;
-		}
-		else if (args.uChar.AsciiChar == '\b')
-		{
-			if (_inputPoint.X == 1)
-			{
-				if (_inputPoint.Y != 1)
-				{
-					_inputPoint.Y--;
-					_inputPoint.X = 128;
-					cout << " ";
-				}
-			}
-			else
-			{
-				_inputPoint.X--;
-				cout << " ";
-			}
-		}
-		SetConsoleTextAttribute(_outputConsole, DEFAULT_COLOR);
+		Control* updatedControl = control->HandleKeyEvent(KeyEventArgs(args, _outputConsole));
+		if (updatedControl != nullptr)
+			return;
 	}
 }
