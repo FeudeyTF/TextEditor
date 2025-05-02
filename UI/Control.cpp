@@ -58,7 +58,7 @@ Control* Control::HandleMouseEvent(MouseEventArgs args)
 
 bool Control::IsPointInControl(int x, int y)
 {
-	return Rectangle.PointInRectangle(x, y);
+	return Rectangle.Contains(x, y);
 }
 
 void Control::DrawRectangle(RectangleBox rectangle, Color color, HANDLE console)
@@ -87,7 +87,7 @@ void Control::DrawBox(RectangleBox rectangle, RectangleBox maxRectangle,  Color 
 	{
 		for (short j = y; j < y + height; j++)
 		{
-			if (!maxRectangle.PointInRectangle(i, j))
+			if (!maxRectangle.Contains(i, j))
 				continue;
 
 			char c = 0;

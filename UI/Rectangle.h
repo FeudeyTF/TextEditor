@@ -13,7 +13,7 @@ class RectangleBox
 
 	public: RectangleBox(int x, int y, int width, int height);  
 
-	public: bool PointInRectangle(int x, int y);  
+	public: bool Contains(int x, int y);  
 
 	public: RectangleBox Intersection(RectangleBox rectangle);
 	  

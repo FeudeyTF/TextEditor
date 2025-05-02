@@ -21,12 +21,13 @@ void DropdownMenu::Draw(RectangleBox rectangle, HANDLE console)
 
 Control* DropdownMenu::HandleMouseEvent(MouseEventArgs args)
 {
-	if (!Active)
-		return nullptr;
 	for (Button* button : _buttons)
 	{
 		if(button->HandleMouseEvent(args))
 			return button;
 	}
+
+	Control::HandleMouseEvent(args);
+
 	return nullptr;
 }

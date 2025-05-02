@@ -48,8 +48,16 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	fileMenuSaveButton->OnMouseEnter += OnButtonEnter;
 	fileMenuSaveButton->OnMouseLeave += OnButtonLeave;
 
-	DropdownMenu* fileMenu = new DropdownMenu(RectangleBox{ 0, 1, 20, 10 }, BACKGROUND_YELLOW, { fileMenuSaveButton });
-	DropdownMenu* saveMenu = new DropdownMenu(RectangleBox{ 10, 1, 20, 10 }, BACKGROUND_YELLOW, { });
+	Button* fileMenuNewButton = new Button("New", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
+	fileMenuNewButton->OnMouseEnter += OnButtonEnter;
+	fileMenuNewButton->OnMouseLeave += OnButtonLeave;
+
+	Button* fileMenuOpenButton = new Button("Open", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
+	fileMenuOpenButton->OnMouseEnter += OnButtonEnter;
+	fileMenuOpenButton->OnMouseLeave += OnButtonLeave;
+
+	DropdownMenu* fileMenu = new DropdownMenu(RectangleBox{ 0, 1, 20, 10 }, NAVBAR_COLOR | FOREGROUND_WHITE, { fileMenuNewButton, fileMenuOpenButton, fileMenuSaveButton });
+	DropdownMenu* saveMenu = new DropdownMenu(RectangleBox{ 10, 1, 20, 10 }, NAVBAR_COLOR | FOREGROUND_WHITE, { });
 
 	NavbarMenu* menu = new NavbarMenu(RectangleBox{ 0, 0, 120, 1 }, NAVBAR_COLOR, navbarButtons, { fileMenu, saveMenu }, this);
 

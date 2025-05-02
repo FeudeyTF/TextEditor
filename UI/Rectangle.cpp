@@ -8,7 +8,7 @@ RectangleBox::RectangleBox(int x, int y, int width, int height)
 	Height = height;
 };
 
-bool RectangleBox::PointInRectangle(int x, int y)
+bool RectangleBox::Contains(int x, int y)
 {
 	return x >= X && y >= Y && x < X + Width && y < Y + Height;
 };

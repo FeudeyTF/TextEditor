@@ -29,7 +29,7 @@ NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> butt
 
 		buttons[i]->OnMouseLeave += [this, i, editor](Control* sender, MouseEventArgs args)
 		{
-			if (i < _menus.size())
+			if (i < _menus.size() && !_menus[i]->Rectangle.Contains(args.X, args.Y))
 			{
 				_menus[i]->Active = false;
 				editor->Invalidate(_menus[i]->Rectangle);
@@ -37,6 +37,19 @@ NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> butt
 		};
 
 		_buttons.push_back(buttons[i]);
+	}
+
+	for (int i = 0; i < _menus.size(); i++)
+	{
+		_menus[i]->OnMouseLeave += [this, i, editor](Control* sender, MouseEventArgs args)
+		{
+			if (!_buttons[i]->Rectangle.Contains(args.X, args.Y))
+			{
+				_menus[i]->Active = false;
+				editor->Invalidate(_menus[i]->Rectangle);
+			}
+		};
+
 	}
 
 	for (int i = 0; i < _menus.size(); i++)
