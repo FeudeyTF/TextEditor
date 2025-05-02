@@ -38,6 +38,13 @@ NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> butt
 
 		_buttons.push_back(buttons[i]);
 	}
+
+	for (int i = 0; i < _menus.size(); i++)
+	{
+		Button* assignedButton = _buttons[i];
+		DropdownMenu* menu = _menus[i];
+	//	menu->Rectangle.X = Rectangle.X + (menu->Rectangle.Width - assignedButton->Rectangle.Width) / 2;
+	}
 }
 
 NavbarMenu::~NavbarMenu()

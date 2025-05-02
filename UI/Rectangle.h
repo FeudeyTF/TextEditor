@@ -15,5 +15,7 @@ class RectangleBox
 
 	public: bool PointInRectangle(int x, int y);  
 
-	public: RectangleBox Intersection(RectangleBox rectangle);  
+	public: RectangleBox Intersection(RectangleBox rectangle);
+	  
+	public: bool Contains(RectangleBox rectangle);  
 };
