@@ -7,7 +7,7 @@ class Input : public Control
 {
 	public: string Text;
 
-	private: Point _inputPoint;
+	public: Point InputPoint;
 
 	public: Input(RectangleBox rectangle, Color color);
 

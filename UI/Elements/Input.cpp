@@ -2,7 +2,7 @@
 
 Input::Input(RectangleBox rectangle, Color color) : Control(rectangle, color)
 {
-	_inputPoint = { (short)Rectangle.X, (short)Rectangle.Y };
+	InputPoint = { (short)Rectangle.X, (short)Rectangle.Y };
 }
 
 Control* Input::HandleMouseEvent(MouseEventArgs args)
@@ -17,49 +17,49 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 		SetConsoleTextAttribute(args.OutputConsole, BackgroundColor);
 		if (args.Char > 31)
 		{
-			if (_inputPoint.Y < Rectangle.Height)
+			if (InputPoint.Y < Rectangle.Height)
 			{
-				if (_inputPoint.X == Rectangle.Width)
+				if (InputPoint.X == Rectangle.Width)
 				{
-					_inputPoint.Y++;
-					_inputPoint.X = Rectangle.X;
+					InputPoint.Y++;
+					InputPoint.X = Rectangle.X;
 				}
-				SetConsoleCursorPosition(args.OutputConsole, _inputPoint);
+				SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 				cout << args.Char;
-				_inputPoint.X++;
-				SetConsoleCursorPosition(args.OutputConsole, _inputPoint);
+				InputPoint.X++;
+				SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 				return this;
 			}
 		}
 		else if (args.Char == '\r')
 		{
-			if (_inputPoint.Y < Rectangle.Height)
+			if (InputPoint.Y < Rectangle.Height)
 			{
-				_inputPoint.Y++;
-				_inputPoint.X = Rectangle.X;
-				SetConsoleCursorPosition(args.OutputConsole, _inputPoint);
+				InputPoint.Y++;
+				InputPoint.X = Rectangle.X;
+				SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 				return this;
 			}
 		}
 		else if (args.Char == '\b')
 		{
-			if (_inputPoint.X == 1)
+			if (InputPoint.X == 1)
 			{
-				if (_inputPoint.Y != 1)
+				if (InputPoint.Y != 1)
 				{
-					_inputPoint.Y--;
-					_inputPoint.X = 128;
+					InputPoint.Y--;
+					InputPoint.X = 128;
 					cout << " ";
-					SetConsoleCursorPosition(args.OutputConsole, _inputPoint);
+					SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 					return this;
 				}
 			}
 			else
 			{
-				_inputPoint.X--;
-				SetConsoleCursorPosition(args.OutputConsole, _inputPoint);
+				InputPoint.X--;
+				SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 				cout << " ";
-				SetConsoleCursorPosition(args.OutputConsole, _inputPoint);
+				SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 				return this;
 			}
 		}
