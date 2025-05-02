@@ -51,12 +51,13 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	fileMenuSaveButton->OnMouseLeave += OnButtonLeave;
 
 	DropdownMenu* fileMenu = new DropdownMenu(RectangleBox{ 0, 1, 20, 10 }, BACKGROUND_YELLOW, { fileMenuSaveButton });
-	DropdownMenu* saveMenu = new DropdownMenu(RectangleBox{ 10, 1, 20, 10 }, BACKGROUND_YELLOW, { exitButton });
+	DropdownMenu* saveMenu = new DropdownMenu(RectangleBox{ 10, 1, 20, 10 }, BACKGROUND_YELLOW, { });
 
-	NavbarMenu* menu = new NavbarMenu(RectangleBox{ 0, 0, 120, 1 }, NAVBAR_COLOR, navbarButtons, { fileMenu, saveMenu });
+	NavbarMenu* menu = new NavbarMenu(RectangleBox{ 0, 0, 120, 1 }, NAVBAR_COLOR, navbarButtons, { fileMenu, saveMenu }, this);
 
 	Box* box = new Box(RectangleBox{ 0, 1, 120, 29 }, true, true, EDITOR_COLOR);
 	Input* input = new Input(RectangleBox{ 1, 2, 119, 29 }, EDITOR_COLOR);
+
 	_controls.push_back(menu);
 	_controls.push_back(box);
 	_controls.push_back(input);
@@ -83,8 +84,7 @@ void TextEditor::Run()
 	if (!SetConsoleMode(_inputConsole, newConsoleMode))
 		return;
 
-	for (Control* control : _controls)
-		control->Draw({ 0, 0, 120, 30 }, _outputConsole);
+	Invalidate({ 0, 0, 120, 30 });
 
 	while (true)
 	{

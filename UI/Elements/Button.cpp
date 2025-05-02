@@ -7,8 +7,9 @@ Button::Button(string text, RectangleBox rectangle, Color color) : Control(recta
 
 void Button::Draw(RectangleBox rectangle, HANDLE console)
 {
-	auto inter = Rectangle.Intersection(rectangle);
-	DrawRectangle(inter, BackgroundColor, console);
+	DrawRectangle(Rectangle.Intersection(rectangle), BackgroundColor, console);
 	if (Text != "")
-		CreateText(Rectangle.X + (Rectangle.Width - Text.size()) / 2, Rectangle.Y + Rectangle.Height / 2, Text, BackgroundColor, console);
+	{
+		CreateText(Rectangle.X + (Rectangle.Width - Text.size()) / 2, Rectangle.Y + Rectangle.Height / 2, rectangle, Text, BackgroundColor, console);
+	}
 }

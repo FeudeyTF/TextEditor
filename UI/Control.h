@@ -36,7 +36,7 @@ class Control
 
 	protected: void DrawRectangle(RectangleBox rectangle, Color color, HANDLE console);
 
-	protected: void DrawBox(RectangleBox rectangle, Color color, bool fill, HANDLE console);
+	protected: void DrawBox(RectangleBox rectangle, RectangleBox maxRectangle, Color color, bool fill, HANDLE console);
 
-	protected: void CreateText(int x, int y, string text, Color color, HANDLE console);
+	protected: void CreateText(int x, int y, RectangleBox rectangle, string text, Color color, HANDLE console);
 };

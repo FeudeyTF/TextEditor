@@ -1,6 +1,6 @@
 #include "NavbarMenu.h";
 
-NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> buttons, vector<DropdownMenu*> menus) : Control(rectangle, color)
+NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> buttons, vector<DropdownMenu*> menus, TextEditor* editor) : Control(rectangle, color)
 {
 	_menus = menus;
 
@@ -21,7 +21,19 @@ NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> butt
 		buttons[i]->OnMouseEnter += [this, i](Control* sender, MouseEventArgs args)
 		{
 			if (i < _menus.size())
-				_menus[i]->Draw({ 0, 0, 120, 30 }, args.OutputConsole);
+			{
+				_menus[i]->Active = true;
+				_menus[i]->Draw(_menus[i]->Rectangle, args.OutputConsole);
+			}
+		};
+
+		buttons[i]->OnMouseLeave += [this, i, editor](Control* sender, MouseEventArgs args)
+		{
+			if (i < _menus.size())
+			{
+				_menus[i]->Active = false;
+				editor->Invalidate(_menus[i]->Rectangle);
+			}
 		};
 
 		_buttons.push_back(buttons[i]);

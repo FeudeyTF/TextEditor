@@ -74,7 +74,7 @@ void Control::DrawRectangle(RectangleBox rectangle, Color color, HANDLE console)
 	SetConsoleTextAttribute(console, DEFAULT_COLOR);
 }
 
-void Control::DrawBox(RectangleBox rectangle, Color color, bool fill, HANDLE console)
+void Control::DrawBox(RectangleBox rectangle, RectangleBox maxRectangle,  Color color, bool fill, HANDLE console)
 {
 	int x = rectangle.X;
 	int y = rectangle.Y;
@@ -86,6 +86,9 @@ void Control::DrawBox(RectangleBox rectangle, Color color, bool fill, HANDLE con
 	{
 		for (short j = y; j < y + height; j++)
 		{
+			if (!maxRectangle.PointInRectangle(i, j))
+				continue;
+
 			char c = 0;
 			if (i == x && j == y)
 				c = 0xC9;
@@ -113,11 +116,22 @@ void Control::DrawBox(RectangleBox rectangle, Color color, bool fill, HANDLE con
 	SetConsoleTextAttribute(console, DEFAULT_COLOR);
 }
 
-void Control::CreateText(int x, int y, string text, Color color, HANDLE console)
+void Control::CreateText(int x, int y, RectangleBox rectangle, string text, Color color, HANDLE console)
 {
+	RectangleBox textRectangle = RectangleBox(x, y, text.size(), 1);
+	textRectangle = textRectangle.Intersection(rectangle);
+	if (textRectangle.Width == 0 || textRectangle.Height == 0)
+		return;
+
 	SetConsoleTextAttribute(console, BackgroundColor);
 	COORD coords = { x, y };
 	SetConsoleCursorPosition(console, coords);
-	cout << text;
+	for (int i = 0; i < text.size(); i++)
+	{
+		if (i >= rectangle.Width)
+			break;
+		SetConsoleCursorPosition(console, { (short)(coords.X + i), (short)coords.Y });
+		cout << text[i];
+	}
 	SetConsoleTextAttribute(console, DEFAULT_COLOR);
 }

@@ -23,5 +23,7 @@ class TextEditor
     private: void HandleMouseEvent(MOUSE_EVENT_RECORD args);
 
     private: void HandleKeyEvent(KEY_EVENT_RECORD args);
+
+    public: void Invalidate(RectangleBox rectangle);
 };
 

@@ -9,19 +9,24 @@ DropdownMenu::DropdownMenu(RectangleBox rectangle, Color color, vector<Button*> 
 		buttons[i]->Rectangle.X = Rectangle.X + (Rectangle.Width - buttons[i]->Rectangle.Width) / 2;
 		buttons[i]->Rectangle.Y = Rectangle.Y + i + 1;
 	}
-
+	Active = false;
 	_buttons = buttons;
 }
 
 void DropdownMenu::Draw(RectangleBox rectangle, HANDLE console)
 {
-	DrawBox(rectangle.Intersection(Rectangle), BackgroundColor, true, console);
-	for (Button* button : _buttons)
-		button->Draw(rectangle, console);
+	if (Active)
+	{
+		DrawBox(Rectangle, rectangle, BackgroundColor, true, console);
+		for (Button* button : _buttons)
+			button->Draw(rectangle, console);
+	}
 }
 
 Control* DropdownMenu::HandleMouseEvent(MouseEventArgs args)
 {
+	if (!Active)
+		return nullptr;
 	for (Button* button : _buttons)
 	{
 		if(button->HandleMouseEvent(args))
