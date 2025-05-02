@@ -6,6 +6,8 @@
 
 class TextEditor
 {
+    private: Input* _input;
+
     private: vector<Control*> _controls;
 
     private: HANDLE _outputConsole;
