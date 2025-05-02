@@ -23,8 +23,6 @@ void OnExitButtonClick(Control* sender, MouseEventArgs args)
 	ExitProcess(0);
 }
 
-
-
 TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 {
 	_inputConsole = inputConsole;
@@ -117,6 +115,8 @@ void TextEditor::HandleMouseEvent(MOUSE_EVENT_RECORD args)
 {
 	for (Control* control : _controls)
 	{
+		if (!control->Active)
+			continue;
 		Control* updatedControl = control->HandleMouseEvent(MouseEventArgs(args, _outputConsole));
 		if (updatedControl != nullptr)
 		{
@@ -130,6 +130,8 @@ void TextEditor::HandleKeyEvent(KEY_EVENT_RECORD args)
 {
 	for (Control* control : _controls)
 	{
+		if (!control->Active)
+			continue;
 		Control* updatedControl = control->HandleKeyEvent(KeyEventArgs(args, _outputConsole));
 		if (updatedControl != nullptr)
 			return;
@@ -139,5 +141,9 @@ void TextEditor::HandleKeyEvent(KEY_EVENT_RECORD args)
 void TextEditor::Invalidate(RectangleBox rectangle)
 {
 	for (Control* control : _controls)
+	{
+		if (!control->Active)
+			continue;
 		control->Draw(rectangle, _outputConsole);
+	}
 }

@@ -4,6 +4,7 @@ Control::Control(RectangleBox rectangle, Color color)
 {
 	Rectangle = rectangle;
 	BackgroundColor = color;
+	Active = false;
 	_mouseInControl = false;
 }
 

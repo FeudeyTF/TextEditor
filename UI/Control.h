@@ -22,6 +22,8 @@ class Control
 
 	public: Event<Control*, MouseEventArgs> OnMouseLeave;
 
+	public: bool Active;
+
 	private: bool _mouseInControl;
 
 	public: Control(RectangleBox rectangle, Color color);

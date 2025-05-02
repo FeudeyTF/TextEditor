@@ -3,8 +3,6 @@
 
 class DropdownMenu : public Control
 {
-	public: bool Active;
-
 	private: vector<Button*> _buttons;
 
 	public: DropdownMenu(RectangleBox rectangle, Color backgroundColor, vector<Button*> buttons);

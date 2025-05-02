@@ -9,7 +9,6 @@ DropdownMenu::DropdownMenu(RectangleBox rectangle, Color color, vector<Button*> 
 		buttons[i]->Rectangle.X = Rectangle.X + (Rectangle.Width - buttons[i]->Rectangle.Width) / 2;
 		buttons[i]->Rectangle.Y = Rectangle.Y + i + 1;
 	}
-	Active = false;
 	_buttons = buttons;
 }
 
