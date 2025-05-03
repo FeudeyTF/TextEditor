@@ -75,11 +75,17 @@ void NavbarMenu::Draw(RectangleBox rectangle, HANDLE console)
 
 Control* NavbarMenu::HandleMouseEvent(MouseEventArgs args)
 {
-	for (Button* button : _buttons)
-		if (button->HandleMouseEvent(args))
-			return button;
 	for (DropdownMenu* menu : _menus)
-		if (menu->HandleMouseEvent(args))
-			return menu;
+	{
+		Control* control = menu->HandleMouseEvent(args);
+		if (control)
+			return control;
+	}
+	for (Button* button : _buttons)
+	{
+		Control* control = button->HandleMouseEvent(args);
+		if (control)
+			return control;
+	}
 	return nullptr;
 }

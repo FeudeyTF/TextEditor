@@ -14,6 +14,8 @@ DropdownMenu::DropdownMenu(RectangleBox rectangle, Color color, vector<Button*> 
 
 void DropdownMenu::Draw(RectangleBox rectangle, HANDLE console)
 {
+	if (!Active)
+		return;
 	DrawBox(Rectangle, rectangle, BackgroundColor, true, console);
 	for (Button* button : _buttons)
 		button->Draw(rectangle, console);
@@ -21,6 +23,8 @@ void DropdownMenu::Draw(RectangleBox rectangle, HANDLE console)
 
 Control* DropdownMenu::HandleMouseEvent(MouseEventArgs args)
 {
+	if (!Active)
+		return nullptr;
 	for (Button* button : _buttons)
 	{
 		if(button->HandleMouseEvent(args))

@@ -6,7 +6,7 @@
 
 class TextEditor
 {
-    private: Input* _input;
+    private: Input* _textInput;
 
     private: vector<Control*> _controls;
 

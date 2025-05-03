@@ -63,7 +63,7 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 
 	Box* box = new Box(RectangleBox{ 0, 1, 120, 29 }, true, true, EDITOR_COLOR);
 	Input* input = new Input(RectangleBox{ 1, 2, 119, 29 }, EDITOR_COLOR);
-	_input = input;
+	_textInput = input;
 
 	_controls.push_back(menu);
 	_controls.push_back(box);
@@ -99,7 +99,7 @@ void TextEditor::Run()
 	{
 		if (!ReadConsoleInput(_inputConsole, inputBuffer, 128, &recordsCount))
 			return;
-		SetConsoleCursorPosition(_outputConsole, _input->InputPoint);
+		SetConsoleCursorPosition(_outputConsole, _textInput->InputPoint);
 		for (DWORD i = 0; i < recordsCount; i++)
 		{
 			switch (inputBuffer[i].EventType)
