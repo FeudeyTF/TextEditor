@@ -22,10 +22,12 @@ class TextEditor
 
     public: void Run();
 
+    public: void Invalidate(RectangleBox rectangle);
+
     private: void HandleMouseEvent(MOUSE_EVENT_RECORD args);
 
     private: void HandleKeyEvent(KEY_EVENT_RECORD args);
 
-    public: void Invalidate(RectangleBox rectangle);
+    private: void HandleSaveButtonClick(Control* sender, MouseEventArgs args);
 };
 

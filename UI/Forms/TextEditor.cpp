@@ -1,4 +1,5 @@
 #include "TextEditor.h"
+#include <fstream> 
 
 #define NAVBAR_COLOR BACKGROUND_CYAN
 #define EDITOR_COLOR BACKGROUND_BLUE
@@ -12,12 +13,6 @@ void OnButtonLeave(Control* sender, MouseEventArgs args)
 {
 	sender->BackgroundColor = NAVBAR_COLOR;
 }
-
-void OnSaveButtonClick(Control* sender, MouseEventArgs args)
-{
-	cout << "Saved";
-}
-
 void OnExitButtonClick(Control* sender, MouseEventArgs args)
 {
 	ExitProcess(0);
@@ -33,7 +28,7 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	Button* fileButton = new Button("File", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
 	Button* saveButton = new Button("Save", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
 	Button* exitButton = new Button("Exit", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
-	saveButton->OnClick += OnSaveButtonClick;
+	saveButton->OnClick += bind(&TextEditor::HandleSaveButtonClick, this, placeholders::_1, placeholders::_2);
 	exitButton->OnClick += OnExitButtonClick;
 	navbarButtons.push_back(fileButton);
 	navbarButtons.push_back(saveButton);
@@ -47,6 +42,7 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	Button* fileMenuSaveButton = new Button("Save", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
 	fileMenuSaveButton->OnMouseEnter += OnButtonEnter;
 	fileMenuSaveButton->OnMouseLeave += OnButtonLeave;
+	fileMenuSaveButton->OnClick += bind(&TextEditor::HandleSaveButtonClick, this, placeholders::_1, placeholders::_2);
 
 	Button* fileMenuNewButton = new Button("New", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
 	fileMenuNewButton->OnMouseEnter += OnButtonEnter;
@@ -93,13 +89,13 @@ void TextEditor::Run()
 
 	Invalidate({ 0, 0, 120, 30 });
 	CONSOLE_CURSOR_INFO cursor = { 1, false };
-	SetConsoleCursorInfo(_outputConsole, &cursor);
+	//SetConsoleCursorInfo(_outputConsole, &cursor);
 
 	while (true)
 	{
 		if (!ReadConsoleInput(_inputConsole, inputBuffer, 128, &recordsCount))
 			return;
-		SetConsoleCursorPosition(_outputConsole, _textInput->InputPoint);
+		//SetConsoleCursorPosition(_outputConsole, _textInput->InputPoint);
 		for (DWORD i = 0; i < recordsCount; i++)
 		{
 			switch (inputBuffer[i].EventType)
@@ -156,5 +152,20 @@ void TextEditor::Invalidate(RectangleBox rectangle)
 		if (!control->Active)
 			continue;
 		control->Draw(rectangle, _outputConsole);
+	}
+}
+
+
+string fileName = "test.txt";
+
+void TextEditor::HandleSaveButtonClick(Control* sender, MouseEventArgs args)
+{
+	if (!_textInput->Text.empty())
+	{
+		string buffer;
+		ofstream file;
+		file.open(fileName);
+		file << _textInput->Text;
+		file.close();
 	}
 }
