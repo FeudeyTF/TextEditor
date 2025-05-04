@@ -10,7 +10,6 @@ NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> butt
 			maxTextSize = button->Text.size();
 	maxTextSize += 2;
 
-
 	for (int i = 0; i < buttons.size(); i++)
 	{
 		buttons[i]->Rectangle.Width = maxTextSize;
@@ -45,6 +44,10 @@ NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> butt
 
 	for (int i = 0; i < _menus.size(); i++)
 	{
+		DropdownMenu* menu = _menus[i];
+		menu->Rectangle.X = Rectangle.X +  i * (menu->Rectangle.Width - _buttons[i]->Rectangle.Width)/ 2 + 1;
+		menu->Rectangle.Y = Rectangle.Y + 1;
+
 		_menus[i]->OnMouseLeave += [this, i, editor](Control* sender, MouseEventArgs args)
 		{
 			if (!_buttons[i]->Rectangle.Contains(args.X, args.Y))
@@ -56,13 +59,6 @@ NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> butt
 			}
 		};
 
-	}
-
-	for (int i = 0; i < _menus.size(); i++)
-	{
-		Button* assignedButton = _buttons[i];
-		DropdownMenu* menu = _menus[i];
-	//	menu->Rectangle.X = Rectangle.X + (menu->Rectangle.Width - assignedButton->Rectangle.Width) / 2;
 	}
 }
 

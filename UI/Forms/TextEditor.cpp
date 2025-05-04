@@ -52,10 +52,9 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	fileMenuOpenButton->OnMouseEnter += OnButtonEnter;
 	fileMenuOpenButton->OnMouseLeave += OnButtonLeave;
 
-	DropdownMenu* fileMenu = new DropdownMenu(RectangleBox{ 0, 1, 20, 10 }, NAVBAR_COLOR | FOREGROUND_WHITE, { fileMenuNewButton, fileMenuOpenButton, fileMenuSaveButton });
-	DropdownMenu* saveMenu = new DropdownMenu(RectangleBox{ 10, 1, 20, 10 }, NAVBAR_COLOR | FOREGROUND_WHITE, { });
+	DropdownMenu* fileMenu = new DropdownMenu(RectangleBox{ 0, 0, 20, 10 }, NAVBAR_COLOR | FOREGROUND_WHITE, { fileMenuNewButton, fileMenuOpenButton, fileMenuSaveButton });
 
-	NavbarMenu* menu = new NavbarMenu(RectangleBox{ 0, 0, 120, 1 }, NAVBAR_COLOR, navbarButtons, { fileMenu, saveMenu }, this);
+	NavbarMenu* menu = new NavbarMenu(RectangleBox{ 0, 0, 120, 1 }, NAVBAR_COLOR, navbarButtons, { fileMenu }, this);
 
 	Box* box = new Box(RectangleBox{ 0, 1, 120, 29 }, true, true, EDITOR_COLOR);
 	Input* input = new Input(RectangleBox{ 1, 2, 119, 29 }, EDITOR_COLOR);
