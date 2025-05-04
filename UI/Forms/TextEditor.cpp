@@ -88,8 +88,6 @@ void TextEditor::Run()
 		return;
 
 	Invalidate({ 0, 0, 120, 30 });
-	CONSOLE_CURSOR_INFO cursor = { 1, false };
-	//SetConsoleCursorInfo(_outputConsole, &cursor);
 
 	while (true)
 	{
@@ -127,6 +125,8 @@ void TextEditor::HandleMouseEvent(MOUSE_EVENT_RECORD args)
 		Control* updatedControl = control->HandleMouseEvent(MouseEventArgs(args, _outputConsole));
 		if (updatedControl != nullptr)
 		{
+			CONSOLE_CURSOR_INFO cursor = { 1, false };
+			SetConsoleCursorInfo(_outputConsole, &cursor);
 			updatedControl->Draw({ 0, 0, 120, 30 }, _outputConsole);
 			return;
 		}
@@ -141,7 +141,11 @@ void TextEditor::HandleKeyEvent(KEY_EVENT_RECORD args)
 			continue;
 		Control* updatedControl = control->HandleKeyEvent(KeyEventArgs(args, _outputConsole));
 		if (updatedControl != nullptr)
+		{
+			CONSOLE_CURSOR_INFO cursor = { 1, true };
+			SetConsoleCursorInfo(_outputConsole, &cursor);
 			return;
+		}
 	}
 }
 
