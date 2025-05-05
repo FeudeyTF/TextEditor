@@ -38,6 +38,8 @@ class Control
 
 	protected: void DrawRectangle(RectangleBox rectangle, Color color, HANDLE console);
 
+	protected: void DrawShadow(RectangleBox rectangle, HANDLE console);
+
 	protected: void DrawBox(RectangleBox rectangle, RectangleBox maxRectangle, Color color, bool fill, HANDLE console);
 
 	protected: void DrawLine(int x, int y, int width, char start, char end, char mid, Color color, HANDLE console);

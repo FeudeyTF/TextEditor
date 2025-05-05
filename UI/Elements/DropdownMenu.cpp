@@ -10,11 +10,7 @@ void DropdownMenu::Draw(RectangleBox rectangle, HANDLE console)
 	if (!Active)
 		return;
 
-	RectangleBox shadowRight = RectangleBox(Rectangle.X + Rectangle.Width, Rectangle.Y + 1, 2, Rectangle.Height);
-	RectangleBox shadowBottom = RectangleBox(Rectangle.X + 1, Rectangle.Y + Rectangle.Height, Rectangle.Width, 1);
-	DrawRectangle(shadowRight, BACKGROUND_BLACK, console);
-	DrawRectangle(shadowBottom, BACKGROUND_BLACK, console);
-
+	DrawShadow(Rectangle.Intersection(rectangle), console);
 	DrawBox(Rectangle, rectangle, BackgroundColor, true, console);
 
 	for (int i = 0; i < _buttons.size(); i++)

@@ -71,6 +71,11 @@ void Control::DrawRectangle(RectangleBox rectangle, Color color, HANDLE console)
 	SetConsoleTextAttribute(console, DEFAULT_COLOR);
 }
 
+void Control::DrawShadow(RectangleBox rectangle, HANDLE console)
+{
+	DrawRectangle(RectangleBox(rectangle.X + 2, rectangle.Y + 1, rectangle.Width, rectangle.Height), BACKGROUND_BLACK, console);
+}
+
 void Control::DrawBox(RectangleBox rectangle, RectangleBox maxRectangle,  Color color, bool fill, HANDLE console)
 {
 	int x = rectangle.X;
