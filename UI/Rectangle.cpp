@@ -33,3 +33,13 @@ bool RectangleBox::Contains(RectangleBox rectangle)
            rectangle.X + rectangle.Width <= X + Width && 
            rectangle.Y + rectangle.Height <= Y + Height;
 }
+
+RectangleBox RectangleBox::WithOffset(int offset)
+{
+    return RectangleBox(X + 2 * offset + 1, Y + 1 * offset, Width - 4 * offset - 2, Height - 2 * offset);
+}
+
+RectangleBox RectangleBox::GetCenteredRectangle(int width, int height)
+{
+    return RectangleBox(X + (Width - width) / 2, Y + (Height - height) / 2, width, height);
+}

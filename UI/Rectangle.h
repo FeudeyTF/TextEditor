@@ -1,6 +1,6 @@
 #pragma once
 class RectangleBox  
-{  
+{
 	public: int X;  
 
 	public: int Y;  
@@ -17,5 +17,9 @@ class RectangleBox
 
 	public: RectangleBox Intersection(RectangleBox rectangle);
 	  
-	public: bool Contains(RectangleBox rectangle);  
+	public: bool Contains(RectangleBox rectangle);
+
+	public: RectangleBox WithOffset(int offset);
+
+	public: RectangleBox GetCenteredRectangle(int width, int height);
 };
