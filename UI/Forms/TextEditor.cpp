@@ -4,6 +4,10 @@
 #define NAVBAR_COLOR BACKGROUND_CYAN
 #define EDITOR_COLOR BACKGROUND_BLUE
 
+void SaveFileWithText(string path, string text);
+
+RectangleBox ConsoleBox = RectangleBox(0, 0, 120, 30);
+
 void OnButtonEnter(Control* sender, MouseEventArgs args)
 {
 	sender->BackgroundColor = BACKGROUND_BLACK | FOREGROUND_WHITE;
@@ -23,6 +27,7 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	_inputConsole = inputConsole;
 	_outputConsole = outputConsole;
 	_oldConsoleMode = 0;
+	FilePath = "";
 
 	vector<Button*> navbarButtons{};
 	Button* fileButton = new Button("File", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
@@ -57,18 +62,24 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	NavbarMenu* menu = new NavbarMenu(RectangleBox{ 0, 0, 120, 1 }, NAVBAR_COLOR, navbarButtons, { fileMenu }, this);
 
 	Box* box = new Box(RectangleBox{ 0, 1, 120, 29 }, true, true, EDITOR_COLOR);
-	Input* input = new Input(RectangleBox{ 1, 2, 119, 29 }, EDITOR_COLOR);
-	_textInput = input;
+	TextInput = new Input(RectangleBox{ 1, 2, 118, 27 }, EDITOR_COLOR);
 
 	_controls.push_back(menu);
 	_controls.push_back(box);
-	_controls.push_back(input);
+	_controls.push_back(TextInput);
+
+	FileNameInputModal = new InputModal("Enter new file name", ConsoleBox.GetCenteredRectangle(80, 6), BACKGROUND_WHITE, BACKGROUND_CYAN);
+	FileNameInputModal->OnClose += bind(&TextEditor::HandleFileNameModalClose, this, placeholders::_1, placeholders::_2);
+	FileNameInputModal->OnSubmit += bind(&TextEditor::HandleFileNameModalSubmit, this, placeholders::_1, placeholders::_2);
+	_modals.push_back(FileNameInputModal);
 }
 
 TextEditor::~TextEditor()
 {
 	for (int i = 0; i < _controls.size(); i++)
 		delete _controls[i];
+	for (int i = 0; i < _modals.size(); i++)
+		delete _modals[i];
 }
 
 void TextEditor::Run()
@@ -86,7 +97,7 @@ void TextEditor::Run()
 	if (!SetConsoleMode(_inputConsole, newConsoleMode))
 		return;
 
-	Invalidate({ 0, 0, 120, 30 });
+	Invalidate(ConsoleBox);
 
 	while (true)
 	{
@@ -117,6 +128,20 @@ void TextEditor::Run()
 
 void TextEditor::HandleMouseEvent(MOUSE_EVENT_RECORD args)
 {
+	for (Modal* modal : _modals)
+	{
+		if (!modal->Active)
+			continue;
+		Control* updatedControl = modal->HandleMouseEvent(MouseEventArgs(args, _outputConsole));
+		if (updatedControl != nullptr)
+		{
+			CONSOLE_CURSOR_INFO cursor = { 1, false };
+			SetConsoleCursorInfo(_outputConsole, &cursor);
+			updatedControl->Draw(ConsoleBox, _outputConsole);
+			return;
+		}
+	}
+
 	for (Control* control : _controls)
 	{
 		if (!control->Active)
@@ -126,7 +151,7 @@ void TextEditor::HandleMouseEvent(MOUSE_EVENT_RECORD args)
 		{
 			CONSOLE_CURSOR_INFO cursor = { 1, false };
 			SetConsoleCursorInfo(_outputConsole, &cursor);
-			updatedControl->Draw({ 0, 0, 120, 30 }, _outputConsole);
+			updatedControl->Draw(ConsoleBox, _outputConsole);
 			return;
 		}
 	}
@@ -134,11 +159,26 @@ void TextEditor::HandleMouseEvent(MOUSE_EVENT_RECORD args)
 
 void TextEditor::HandleKeyEvent(KEY_EVENT_RECORD args)
 {
+	KeyEventArgs keyEventArgs = KeyEventArgs(args, _outputConsole);
+
+	for (Modal* modal : _modals)
+	{
+		if (!modal->Active)
+			continue;
+		Control* updatedControl = modal->HandleKeyEvent(keyEventArgs);
+		if (updatedControl != nullptr)
+		{
+			CONSOLE_CURSOR_INFO cursor = { 1, true };
+			SetConsoleCursorInfo(_outputConsole, &cursor);
+			return;
+		}
+	}
+
 	for (Control* control : _controls)
 	{
 		if (!control->Active)
 			continue;
-		Control* updatedControl = control->HandleKeyEvent(KeyEventArgs(args, _outputConsole));
+		Control* updatedControl = control->HandleKeyEvent(keyEventArgs);
 		if (updatedControl != nullptr)
 		{
 			CONSOLE_CURSOR_INFO cursor = { 1, true };
@@ -152,23 +192,52 @@ void TextEditor::Invalidate(RectangleBox rectangle)
 {
 	for (Control* control : _controls)
 	{
-		if (!control->Active)
-			continue;
-		control->Draw(rectangle, _outputConsole);
+		if (control->Active)
+			control->Draw(rectangle, _outputConsole);
+	}
+
+	for (Modal* modal : _modals)
+	{
+		if (modal->Active)
+			modal->Draw(rectangle, _outputConsole);
 	}
 }
 
+void TextEditor::HandleFileNameModalClose(Modal* modal, int arg)
+{
+	FileNameInputModal->Active = false;
+	RectangleBox modalBox = FileNameInputModal->Rectangle;
+	Invalidate({ modalBox.X, modalBox.Y, modalBox.Width + 2, modalBox.Height + 1 });
+}
 
-string fileName = "test.txt";
+void TextEditor::HandleFileNameModalSubmit(Modal* modal, int arg)
+{
+	FilePath = FileNameInputModal->TextInput->Text;
+	SaveFileWithText(FilePath, TextInput->Text);
+	FileNameInputModal->Active = false;
+	RectangleBox modalBox = FileNameInputModal->Rectangle;
+	Invalidate({ modalBox.X, modalBox.Y, modalBox.Width + 2, modalBox.Height + 1 });
+}
 
 void TextEditor::HandleSaveButtonClick(Control* sender, MouseEventArgs args)
 {
-	if (!_textInput->Text.empty())
+	if (FilePath.empty())
+	{
+		FileNameInputModal->Active = true;
+		FileNameInputModal->Draw(ConsoleBox, args.OutputConsole);
+	}
+	else
+		SaveFileWithText(FilePath, TextInput->Text);
+}
+
+void SaveFileWithText(string filePath, string text)
+{
+	if (!text.empty())
 	{
 		string buffer;
 		ofstream file;
-		file.open(fileName);
-		file << _textInput->Text;
+		file.open(filePath);
+		file << text;
 		file.close();
 	}
 }

@@ -2,13 +2,19 @@
 #include "../Elements/NavbarMenu.h"
 #include "../Elements/Box.h"
 #include "../Elements/Input.h"
-
+#include "../Modals/InputModal.h"
 
 class TextEditor
 {
-    private: Input* _textInput;
+    public: InputModal* FileNameInputModal;
+
+    public: Input* TextInput;
+
+    public: string FilePath;
 
     private: vector<Control*> _controls;
+
+    private: vector<Modal*> _modals;
 
     private: HANDLE _outputConsole;
 
@@ -29,5 +35,9 @@ class TextEditor
     private: void HandleKeyEvent(KEY_EVENT_RECORD args);
 
     private: void HandleSaveButtonClick(Control* sender, MouseEventArgs args);
-};
+
+    private: void HandleFileNameModalClose(Modal* sender, int arg);
+
+    private: void HandleFileNameModalSubmit(Modal* sender, int arg);
+}; 
 

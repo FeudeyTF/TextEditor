@@ -8,6 +8,7 @@ Input::Input(RectangleBox rectangle, Color color) : Control(rectangle, color)
 void Input::Draw(RectangleBox rectangle, HANDLE console)
 {
 	Point coords = { Rectangle.X,  Rectangle.Y };
+	DrawRectangle(Rectangle.Intersection(rectangle), BackgroundColor, console);
 	SetConsoleTextAttribute(console, BackgroundColor);
 	for (int i = 0; i < Text.size(); i++)
 	{
@@ -38,12 +39,15 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 		SetConsoleTextAttribute(args.OutputConsole, BackgroundColor);
 		if (args.Char > 31)
 		{
-			if (InputPoint.X == Rectangle.Width)
+			if (InputPoint.X == Rectangle.X + Rectangle.Width)
 			{
-				if (InputPoint.Y >= Rectangle.Y + Rectangle.Height)
+				if (InputPoint.Y < Rectangle.Height - 1)
+				{
+					InputPoint.Y++;
+					InputPoint.X = Rectangle.X;
+				}
+				else
 					return nullptr;
-				InputPoint.Y++;
-				InputPoint.X = Rectangle.X;
 			}
 			SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 			cout << args.Char;
@@ -54,13 +58,14 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 		}
 		else if (args.Char == '\r')
 		{
-			if (InputPoint.Y < Rectangle.Height)
+			if (InputPoint.Y < Rectangle.Y + Rectangle.Height - 1)
 			{
 				InputPoint.Y++;
 				InputPoint.X = Rectangle.X;
 				SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 				Text += '\n';
 			}
+			return this;
 		}
 		else if (args.Char == '\b')
 		{
@@ -77,6 +82,7 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 					InputPoint.X--;
 				SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 				cout << " ";
+				return this;
 			}
 		}
 	}
