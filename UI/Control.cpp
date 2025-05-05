@@ -64,13 +64,9 @@ bool Control::IsPointInControl(int x, int y)
 void Control::DrawRectangle(RectangleBox rectangle, Color color, HANDLE console)
 {
 	SetConsoleTextAttribute(console, color);
-	for (int i = rectangle.X; i < rectangle.X + rectangle.Width; i++)
+	for (int i = rectangle.Y; i < rectangle.Y + rectangle.Height; i++)
 	{
-		for (int j = rectangle.Y; j < rectangle.Y + rectangle.Height; j++)
-		{
-			SetConsoleCursorPosition(console, { (short)i , (short)j });
-			cout << " ";
-		}
+		DrawLine(rectangle.X, i, rectangle.Width, ' ', ' ', ' ', color, console);
 	}
 	SetConsoleTextAttribute(console, DEFAULT_COLOR);
 }
@@ -82,57 +78,71 @@ void Control::DrawBox(RectangleBox rectangle, RectangleBox maxRectangle,  Color 
 	int width = rectangle.Width;
 	int height = rectangle.Height;
 
+	RectangleBox intersection = maxRectangle.Intersection(rectangle);
+
 	SetConsoleTextAttribute(console, color);
-	for (short i = x; i < x + width; i++)
+
+	for (int i = intersection.Y; i < intersection.Y + intersection.Height; i++)
 	{
-		for (short j = y; j < y + height; j++)
+		if (i == y)
 		{
-			if (!maxRectangle.Contains(i, j))
-				continue;
-
-			char c = 0;
-			if (i == x && j == y)
-				c = 0xC9;
-			else if (i == x && j == y + height - 1)
-				c = 0xC8;
-			else if (i == x + width - 1 && j == y)
-				c = 0xBB;
-			else if (i == x + width - 1 && j == y + height - 1)
-				c = 0xBC;
-			else if (i == x || i == x + width - 1)
-				c = 0xBA;
-			else if (j == y || j == y + height - 1)
-				c = 0xCD;
-			else if (fill)
-				c = ' ';
-
-			if (c != 0)
-			{
-				SetConsoleCursorPosition(console, { i, j });
-				cout << c;
-			}
+			DrawLine(intersection.X, i, intersection.Width,
+				intersection.X <= x ? 0xC9 : -1,
+				intersection.X + intersection.Width >= x + width ? 0xBB : -1,
+				0xCD,
+			color, console);
+		}
+		else if (i == y + height - 1)
+		{
+			DrawLine(intersection.X, i, intersection.Width, 
+				intersection.X <= x ? 0xC8 : -1,
+				intersection.X + intersection.Width >= x + width ? 0xBC : -1,
+				0xCD, 
+			color, console);
+		}
+		else
+		{
+			DrawLine(intersection.X, i, intersection.Width, 
+				intersection.X <= x ? 0xBA : -1, 
+				intersection.X + intersection.Width >= x + width ? 0xBA : -1,
+				fill ? ' ' : -1,
+			color, console);
 		}
 	}
 
 	SetConsoleTextAttribute(console, DEFAULT_COLOR);
 }
 
+void Control::DrawLine(int x, int y, int width, char start, char end, char mid, Color color, HANDLE console)
+{
+	if (start != -1)
+		width--;
+	if (end != -1)
+		width--;
+	SetConsoleCursorPosition(console, { (short)x, (short)y, });
+	string line = "";
+	if (start != -1)
+		line += start;
+	if (width > 0)
+		line += string(width, mid);
+	if (end != -1)
+		line += end;
+	cout << line;
+}
+
 void Control::CreateText(int x, int y, RectangleBox rectangle, string text, Color color, HANDLE console)
 {
-	RectangleBox textRectangle = RectangleBox(x, y, text.size(), 1);
-	textRectangle = textRectangle.Intersection(rectangle);
-	if (textRectangle.Width == 0 || textRectangle.Height == 0)
+	if (!rectangle.Contains(x, y))
 		return;
 
 	SetConsoleTextAttribute(console, BackgroundColor);
+	string s = "";
+	for (int i = 0; i < min(rectangle.Width, text.size()); i++)
+		s += text[i];
+
 	COORD coords = { x, y };
 	SetConsoleCursorPosition(console, coords);
-	for (int i = 0; i < text.size(); i++)
-	{
-		if (i >= rectangle.Width)
-			break;
-		SetConsoleCursorPosition(console, { (short)(coords.X + i), (short)coords.Y });
-		cout << text[i];
-	}
+	cout << s;
+
 	SetConsoleTextAttribute(console, DEFAULT_COLOR);
 }

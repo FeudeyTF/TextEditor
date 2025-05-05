@@ -40,5 +40,7 @@ class Control
 
 	protected: void DrawBox(RectangleBox rectangle, RectangleBox maxRectangle, Color color, bool fill, HANDLE console);
 
+	protected: void DrawLine(int x, int y, int width, char start, char end, char mid, Color color, HANDLE console);
+
 	protected: void CreateText(int x, int y, RectangleBox rectangle, string text, Color color, HANDLE console);
 };
