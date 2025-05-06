@@ -10,7 +10,7 @@ class TextEditor
 
     public: Input* TextInput;
 
-    public: string FilePath;
+    public: String FilePath;
 
     private: vector<Control*> _controls;
 
@@ -21,6 +21,8 @@ class TextEditor
     private: HANDLE _inputConsole;
 
     private: DWORD _oldConsoleMode;
+
+    private: Graphics* _graphics;
 
     public: TextEditor(HANDLE outputConsole, HANDLE inputConsole);
 

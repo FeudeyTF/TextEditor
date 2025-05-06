@@ -7,6 +7,7 @@
 #include "EventArgs/MouseEventArgs.h"
 #include "EventArgs/KeyEventArgs.h"
 #include "Rectangle.h"
+#include "Graphics/Graphics.h"
 
 using namespace std;
 
@@ -24,27 +25,17 @@ class Control
 
 	public: bool Active;
 
+	protected: Graphics* _graphics;
+
 	private: bool _mouseInControl;
 
-	public: Control(RectangleBox rectangle, Color color);
+	public: Control(RectangleBox rectangle, Color color, Graphics* graphics);
 
-	public: virtual void Draw(RectangleBox rectangle, HANDLE console);
+	public: virtual void Draw(RectangleBox rectangle);
 
 	public: virtual Control* HandleMouseEvent(MouseEventArgs args);
 
 	public: virtual Control* HandleKeyEvent(KeyEventArgs args);
 
 	protected: bool IsPointInControl(int x, int y);
-
-	protected: void DrawRectangle(RectangleBox rectangle, Color color, HANDLE console);
-
-	protected: void DrawShadow(RectangleBox rectangle, HANDLE console);
-
-	protected: void DrawBox(RectangleBox rectangle, RectangleBox maxRectangle, Color color, bool fill, HANDLE console);
-
-	protected: void DrawLine(int x, int y, int width, char start, char end, char mid, Color color, HANDLE console);
-
-	protected: void CreateText(int x, int y, RectangleBox rectangle, string text, Color color, HANDLE console);
-
-	protected: int Clamp(int value, int min, int max);
 };

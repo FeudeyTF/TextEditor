@@ -3,7 +3,7 @@
 
 class Modal : public Control
 {
-	public: string Title;
+	public: String Title;
 
 	public: Event<Modal*, int> OnClose;
 
@@ -11,7 +11,7 @@ class Modal : public Control
 
 	protected: vector<Control*> _controls;
 
-	public: Modal(string title, RectangleBox rectangle, Color color);
+	public: Modal(String title, RectangleBox rectangle, Color color, Graphics* graphics);
 
 	public: virtual Control* HandleMouseEvent(MouseEventArgs args);
 };

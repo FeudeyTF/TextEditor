@@ -16,7 +16,7 @@ class InputModal : public Modal
 
 	private: TextEditor* _editor;
 
-	public: InputModal(string text, RectangleBox rectangle, Color modalColor, Color inputColor, TextEditor* editor);
+	public: InputModal(String text, RectangleBox rectangle, Color modalColor, Color inputColor, TextEditor* editor, Graphics* graphics);
 
 	public: ~InputModal();
 
@@ -24,10 +24,9 @@ class InputModal : public Modal
 
 	public: void HandleSubmitButtonClick(Control* sender, MouseEventArgs args);
 
-	public: virtual void Draw(RectangleBox rectangle, HANDLE console);
+	public: virtual void Draw(RectangleBox rectangle) override;
 
-	public: virtual Control* HandleKeyEvent(KeyEventArgs args);
+	public: virtual Control* HandleKeyEvent(KeyEventArgs args) override;
 
-	public: virtual Control* HandleMouseEvent(MouseEventArgs args);
+	public: virtual Control* HandleMouseEvent(MouseEventArgs args) override;
 };
-

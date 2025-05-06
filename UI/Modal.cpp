@@ -1,6 +1,6 @@
 #include "Modal.h"
 
-Modal::Modal(string title, RectangleBox rectangle, Color color) : Control(rectangle, color)
+Modal::Modal(String title, RectangleBox rectangle, Color color, Graphics* graphics) : Control(rectangle, color, graphics)
 {
 	Active = false;
 	Title = title;

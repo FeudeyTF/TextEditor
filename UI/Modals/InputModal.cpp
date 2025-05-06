@@ -1,19 +1,19 @@
 #include "InputModal.h"
 
-InputModal::InputModal(string text, RectangleBox rectangle, Color modalColor, Color inputColor, TextEditor* editor) : Modal(text, rectangle, modalColor)
+InputModal::InputModal(String text, RectangleBox rectangle, Color modalColor, Color inputColor, TextEditor* editor, Graphics* graphics) : Modal(text, rectangle, modalColor, graphics)
 {
 	_editor = editor;
-	CloseButton = new Button("X", {rectangle.X + rectangle.Width - 3, rectangle.Y, 3, 1}, BACKGROUND_RED | FOREGROUND_BRIGHT_WHITE);
+	CloseButton = new Button(L"X", {rectangle.X + rectangle.Width - 3, rectangle.Y, 3, 1}, BACKGROUND_RED | FOREGROUND_BRIGHT_WHITE, graphics);
 	CloseButton->OnClick += bind(&InputModal::HandleCloseButtonClick, this, placeholders::_1, placeholders::_2);
 	
 	RectangleBox submitButtonBox = rectangle.GetCenteredRectangle(8, 1);
 	submitButtonBox.Y++;
-	SubmitButton = new Button("Submit", submitButtonBox, modalColor);
+	SubmitButton = new Button(L"Submit", submitButtonBox, modalColor, graphics);
 	SubmitButton->OnClick += bind(&InputModal::HandleSubmitButtonClick, this, placeholders::_1, placeholders::_2);
 
-	Title = " " + Title + " ";
+	Title = L" " + Title + L" ";
 	RectangleBox inputBox = rectangle.GetCenteredRectangle(rectangle.WithOffset(1).Width - 4, 1);
-	TextInput = new Input(inputBox, inputColor);
+	TextInput = new Input(inputBox, inputColor, graphics);
 	_controls.push_back(CloseButton);
 	_controls.push_back(SubmitButton);
 	_controls.push_back(TextInput);
@@ -37,14 +37,14 @@ void InputModal::HandleSubmitButtonClick(Control* sender, MouseEventArgs args)
 	OnSubmit.Invoke(this, 0);
 }
 
-void InputModal::Draw(RectangleBox rectangle, HANDLE console)
+void InputModal::Draw(RectangleBox rectangle)
 {
-	DrawShadow(Rectangle.Intersection(rectangle), console);
-	DrawRectangle(Rectangle.Intersection(rectangle), BackgroundColor, console);
-	DrawBox(Rectangle.WithOffset(1), rectangle, BackgroundColor, true, console);
-	CreateText(Rectangle.X + (Rectangle.Width - (int)Title.size()) / 2, Rectangle.Y + 1, rectangle, Title, BackgroundColor, console);
+	_graphics->DrawShadow(Rectangle.Intersection(rectangle));
+	_graphics->DrawRectangle(Rectangle.Intersection(rectangle), BackgroundColor);
+	_graphics->DrawBox(Rectangle.WithOffset(1), rectangle, BackgroundColor, true);
+	_graphics->CreateText(Rectangle.X + (Rectangle.Width - (int)Title.size()) / 2, Rectangle.Y + 1, rectangle, Title, BackgroundColor);
 	for(Control* control : _controls)
-		control->Draw(rectangle, console);
+		control->Draw(rectangle);
 }
 
 Control* InputModal::HandleKeyEvent(KeyEventArgs args)
@@ -67,6 +67,9 @@ Control* InputModal::HandleMouseEvent(MouseEventArgs args)
 			_oldPosition = { -1, -1 };
 	}
 
+	if (!Rectangle.Contains(_oldPosition.X, _oldPosition.Y))
+		return nullptr;
+
 	if (args.EventType == MouseEventType::MouseMoved && _oldPosition.X != -1 && _oldPosition.Y != -1)
 	{
 		int deltaX = args.X - _oldPosition.X;
@@ -79,6 +82,7 @@ Control* InputModal::HandleMouseEvent(MouseEventArgs args)
 
 			Rectangle.X += deltaX;
 			Rectangle.Y += deltaY;
+
 
 			RectangleBox newRectangle = Rectangle;
 			newRectangle.Width += 2;
@@ -95,8 +99,8 @@ Control* InputModal::HandleMouseEvent(MouseEventArgs args)
 
 			_oldPosition = { args.X, args.Y };
 
-			_editor->Invalidate(oldRectangle.Union(newRectangle));
-			return nullptr;
+			_editor->Invalidate(newRectangle.Union(oldRectangle));
+			return this;
 		}
 	}
 	return nullptr;

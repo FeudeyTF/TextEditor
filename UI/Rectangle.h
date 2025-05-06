@@ -28,4 +28,6 @@ class RectangleBox
 	public: RectangleBox GetCenteredRectangle(int width, int height);
 
 	public: Point Center();
+
+	public: operator SMALL_RECT();
 };

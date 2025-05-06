@@ -3,10 +3,10 @@
 
 class Button : public Control
 {
-    public: string Text;
+    public: String Text;
 
-    public: Button(string text, RectangleBox rectangle, Color backgroundColor);
+    public: Button(String text, RectangleBox rectangle, Color backgroundColor, Graphics* graphics);
 
-    public: virtual void Draw(RectangleBox rectangle, HANDLE console) override;
+    public: virtual void Draw(RectangleBox rectangle) override;
 };
 

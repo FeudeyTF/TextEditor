@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\Graphics\Graphics.cpp" />
     <ClCompile Include="UI\Point.cpp" />
     <ClCompile Include="UI\Modals\InputModal.cpp" />
     <ClCompile Include="UI\Modal.cpp" />
@@ -145,6 +146,7 @@
     <ClCompile Include="UI\Forms\TextEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\Graphics\Graphics.h" />
     <ClInclude Include="UI\Point.h" />
     <ClInclude Include="UI\Modals\InputModal.h" />
     <ClInclude Include="UI\Modal.h" />

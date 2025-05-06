@@ -3,13 +3,13 @@
 
 class Input : public Control
 {
-	public: string Text;
+	public: wstring  Text;
 
 	public: Point InputPoint;
 
-	public: Input(RectangleBox rectangle, Color color);
+	public: Input(RectangleBox rectangle, Color color, Graphics* graphics);
 
-	public: virtual void Draw(RectangleBox rectangle, HANDLE console);
+	public: virtual void Draw(RectangleBox rectangle);
 
 	public: virtual Control* HandleMouseEvent(MouseEventArgs args) override;
 

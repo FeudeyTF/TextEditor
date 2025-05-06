@@ -1,17 +1,14 @@
 #include "DropdownMenu.h"
 
-DropdownMenu::DropdownMenu(RectangleBox rectangle, Color color, vector<Button*> buttons) : Control(rectangle, color)
+DropdownMenu::DropdownMenu(RectangleBox rectangle, Color color, vector<Button*> buttons, Graphics* graphics) : Control(rectangle, color, graphics)
 {
 	_buttons = buttons;
 }
 
-void DropdownMenu::Draw(RectangleBox rectangle, HANDLE console)
+void DropdownMenu::Draw(RectangleBox rectangle)
 {
-	if (!Active)
-		return;
-
-	DrawShadow(Rectangle.Intersection(rectangle), console);
-	DrawBox(Rectangle, rectangle, BackgroundColor, true, console);
+	_graphics->DrawShadow(Rectangle.Intersection(rectangle));
+	_graphics->DrawBox(Rectangle, rectangle, BackgroundColor, true);
 
 	for (int i = 0; i < _buttons.size(); i++)
 	{
@@ -19,18 +16,21 @@ void DropdownMenu::Draw(RectangleBox rectangle, HANDLE console)
 		_buttons[i]->Rectangle.Height = 1;
 		_buttons[i]->Rectangle.X = Rectangle.X + (Rectangle.Width - _buttons[i]->Rectangle.Width) / 2;
 		_buttons[i]->Rectangle.Y = Rectangle.Y + i + 1;
-		_buttons[i]->Draw(rectangle, console);
+		_buttons[i]->Draw(rectangle);
 	}
+
+	_graphics->Invalidate();
 }
 
 Control* DropdownMenu::HandleMouseEvent(MouseEventArgs args)
 {
-	if (!Active)
-		return nullptr;
 	for (Button* button : _buttons)
 	{
-		if(button->HandleMouseEvent(args))
-			return button;
+		if (button->Active)
+		{
+			if (button->HandleMouseEvent(args))
+				return button;
+		}
 	}
 
 	Control::HandleMouseEvent(args);

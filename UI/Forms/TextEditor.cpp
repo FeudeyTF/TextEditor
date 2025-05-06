@@ -1,10 +1,11 @@
 #include "TextEditor.h"
 #include <fstream> 
+#include <codecvt>
 
 #define NAVBAR_COLOR BACKGROUND_CYAN
 #define EDITOR_COLOR BACKGROUND_BLUE
 
-void SaveFileWithText(string path, string text);
+void SaveFileWithText(String path, String text);
 
 RectangleBox ConsoleBox = RectangleBox(0, 0, 120, 30);
 
@@ -27,12 +28,13 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	_inputConsole = inputConsole;
 	_outputConsole = outputConsole;
 	_oldConsoleMode = 0;
-	FilePath = "";
+
+	_graphics = new Graphics(ConsoleBox, outputConsole, inputConsole);
 
 	vector<Button*> navbarButtons{};
-	Button* fileButton = new Button("File", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
-	Button* saveButton = new Button("Save", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
-	Button* exitButton = new Button("Exit", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
+	Button* fileButton = new Button(L"File", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR, _graphics);
+	Button* saveButton = new Button(L"Save", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR, _graphics);
+	Button* exitButton = new Button(L"Exit", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR, _graphics);
 	saveButton->OnClick += bind(&TextEditor::HandleSaveButtonClick, this, placeholders::_1, placeholders::_2);
 	exitButton->OnClick += OnExitButtonClick;
 	navbarButtons.push_back(fileButton);
@@ -44,31 +46,31 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 		button->OnMouseLeave += OnButtonLeave;
 	}
 
-	Button* fileMenuSaveButton = new Button("Save", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
+	Button* fileMenuSaveButton = new Button(L"Save", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR, _graphics);
 	fileMenuSaveButton->OnMouseEnter += OnButtonEnter;
 	fileMenuSaveButton->OnMouseLeave += OnButtonLeave;
 	fileMenuSaveButton->OnClick += bind(&TextEditor::HandleSaveButtonClick, this, placeholders::_1, placeholders::_2);
 
-	Button* fileMenuNewButton = new Button("New", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
+	Button* fileMenuNewButton = new Button(L"New", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR, _graphics);
 	fileMenuNewButton->OnMouseEnter += OnButtonEnter;
 	fileMenuNewButton->OnMouseLeave += OnButtonLeave;
 
-	Button* fileMenuOpenButton = new Button("Open", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR);
+	Button* fileMenuOpenButton = new Button(L"Open", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR, _graphics);
 	fileMenuOpenButton->OnMouseEnter += OnButtonEnter;
 	fileMenuOpenButton->OnMouseLeave += OnButtonLeave;
 
-	DropdownMenu* fileMenu = new DropdownMenu(RectangleBox{ 0, 0, 20, 10 }, NAVBAR_COLOR | FOREGROUND_WHITE, { fileMenuNewButton, fileMenuOpenButton, fileMenuSaveButton });
+	DropdownMenu* fileMenu = new DropdownMenu({ 0, 0, 20, 10 }, NAVBAR_COLOR | FOREGROUND_WHITE, { fileMenuNewButton, fileMenuOpenButton, fileMenuSaveButton }, _graphics);
 
-	NavbarMenu* menu = new NavbarMenu(RectangleBox{ 0, 0, 120, 1 }, NAVBAR_COLOR, navbarButtons, { fileMenu }, this);
+	NavbarMenu* menu = new NavbarMenu({ 0, 0, 120, 1 }, NAVBAR_COLOR, navbarButtons, { fileMenu }, _graphics);
 
-	Box* box = new Box(RectangleBox{ 0, 1, 120, 29 }, true, true, EDITOR_COLOR);
-	TextInput = new Input(RectangleBox{ 1, 2, 118, 27 }, EDITOR_COLOR);
+	Box* box = new Box({ 0, 1, 120, 29 }, true, true, EDITOR_COLOR, _graphics);
+	TextInput = new Input({ 1, 2, 118, 27 }, EDITOR_COLOR, _graphics);
 
-	_controls.push_back(menu);
 	_controls.push_back(box);
 	_controls.push_back(TextInput);
+	_controls.push_back(menu);
 
-	FileNameInputModal = new InputModal("Enter new file name", ConsoleBox.GetCenteredRectangle(80, 6), BACKGROUND_WHITE, BACKGROUND_CYAN, this);
+	FileNameInputModal = new InputModal(L"Enter new file name", ConsoleBox.GetCenteredRectangle(80, 6), BACKGROUND_WHITE, BACKGROUND_CYAN, this, _graphics);
 	FileNameInputModal->OnClose += bind(&TextEditor::HandleFileNameModalClose, this, placeholders::_1, placeholders::_2);
 	FileNameInputModal->OnSubmit += bind(&TextEditor::HandleFileNameModalSubmit, this, placeholders::_1, placeholders::_2);
 	_modals.push_back(FileNameInputModal);
@@ -80,6 +82,7 @@ TextEditor::~TextEditor()
 		delete _controls[i];
 	for (int i = 0; i < _modals.size(); i++)
 		delete _modals[i];
+	delete _graphics;
 }
 
 void TextEditor::Run()
@@ -137,7 +140,8 @@ void TextEditor::HandleMouseEvent(MOUSE_EVENT_RECORD args)
 		{
 			CONSOLE_CURSOR_INFO cursor = { 1, false };
 			SetConsoleCursorInfo(_outputConsole, &cursor);
-			updatedControl->Draw(ConsoleBox, _outputConsole);
+			updatedControl->Draw(ConsoleBox);
+			Invalidate(updatedControl->Rectangle);
 			return;
 		}
 	}
@@ -151,7 +155,8 @@ void TextEditor::HandleMouseEvent(MOUSE_EVENT_RECORD args)
 		{
 			CONSOLE_CURSOR_INFO cursor = { 1, false };
 			SetConsoleCursorInfo(_outputConsole, &cursor);
-			updatedControl->Draw(ConsoleBox, _outputConsole);
+			updatedControl->Draw(ConsoleBox);
+			Invalidate(updatedControl->Rectangle);
 			return;
 		}
 	}
@@ -170,6 +175,7 @@ void TextEditor::HandleKeyEvent(KEY_EVENT_RECORD args)
 		{
 			CONSOLE_CURSOR_INFO cursor = { 1, true };
 			SetConsoleCursorInfo(_outputConsole, &cursor);
+			Invalidate(updatedControl->Rectangle);
 			return;
 		}
 	}
@@ -183,6 +189,7 @@ void TextEditor::HandleKeyEvent(KEY_EVENT_RECORD args)
 		{
 			CONSOLE_CURSOR_INFO cursor = { 1, true };
 			SetConsoleCursorInfo(_outputConsole, &cursor);
+			Invalidate(updatedControl->Rectangle);
 			return;
 		}
 	}
@@ -193,14 +200,15 @@ void TextEditor::Invalidate(RectangleBox rectangle)
 	for (Control* control : _controls)
 	{
 		if (control->Active)
-			control->Draw(rectangle, _outputConsole);
+			control->Draw(rectangle);
 	}
 
 	for (Modal* modal : _modals)
 	{
 		if (modal->Active)
-			modal->Draw(rectangle, _outputConsole);
+			modal->Draw(rectangle);
 	}
+	_graphics->Invalidate();
 }
 
 void TextEditor::HandleFileNameModalClose(Modal* modal, int arg)
@@ -224,17 +232,17 @@ void TextEditor::HandleSaveButtonClick(Control* sender, MouseEventArgs args)
 	if (FilePath.empty())
 	{
 		FileNameInputModal->Active = true;
-		FileNameInputModal->Draw(ConsoleBox, args.OutputConsole);
+		FileNameInputModal->Draw(ConsoleBox);
 	}
 	else
 		SaveFileWithText(FilePath, TextInput->Text);
 }
 
-void SaveFileWithText(string filePath, string text)
+void SaveFileWithText(String filePath, String text)
 {
-	string buffer;
-	ofstream file;
+	wofstream file;
 	file.open(filePath);
+	file.imbue(locale(file.getloc(), new codecvt_utf8_utf16<wchar_t, 0x10ffff, codecvt_mode(consume_header | generate_header)>));
 	file << text;
 	file.close();
 }

@@ -58,3 +58,13 @@ Point RectangleBox::Center()
 {
     return { X + Width / 2, Y + Height / 2 };
 }
+
+RectangleBox::operator SMALL_RECT()
+{
+    SMALL_RECT result{};
+    result.Left = X;
+    result.Top = Y;
+    result.Right = X + Width - 1;
+    result.Bottom = Y + Height - 1;
+    return result;
+}

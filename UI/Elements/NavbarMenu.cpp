@@ -1,6 +1,6 @@
 #include "NavbarMenu.h"
 
-NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> buttons, vector<DropdownMenu*> menus, TextEditor* editor) : Control(rectangle, color)
+NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> buttons, vector<DropdownMenu*> menus, Graphics* graphics) : Control(rectangle, color, graphics)
 {
 	_menus = menus;
 
@@ -21,21 +21,15 @@ NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> butt
 		{
 			if (i < _menus.size())
 			{
-				DropdownMenu* menu = _menus[i];
-				menu->Active = true;
-				RectangleBox invalidationRectangle = RectangleBox(menu->Rectangle.X, menu->Rectangle.Y, menu->Rectangle.Width + 1, menu->Rectangle.Height + 1);
-				menu->Draw(invalidationRectangle, args.OutputConsole);
+				_menus[i]->Active = true;
 			}
 		};
 
-		buttons[i]->OnMouseLeave += [this, i, editor](Control* sender, MouseEventArgs args)
+		buttons[i]->OnMouseLeave += [this, i](Control* sender, MouseEventArgs args)
 		{
 			if (i < _menus.size() && !_menus[i]->Rectangle.Contains(args.X, args.Y))
 			{
-				DropdownMenu* menu = _menus[i];
-				menu->Active = false;
-				RectangleBox invalidationRectangle = RectangleBox(menu->Rectangle.X, menu->Rectangle.Y, menu->Rectangle.Width + 2, menu->Rectangle.Height + 1);
-				editor->Invalidate(invalidationRectangle);
+				_menus[i]->Active = false;
 			}
 		};
 
@@ -45,20 +39,17 @@ NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> butt
 	for (int i = 0; i < _menus.size(); i++)
 	{
 		DropdownMenu* menu = _menus[i];
+		menu->Active = false;
 		menu->Rectangle.X = Rectangle.X +  i * (menu->Rectangle.Width - _buttons[i]->Rectangle.Width)/ 2 + 1;
 		menu->Rectangle.Y = Rectangle.Y + 1;
 
-		_menus[i]->OnMouseLeave += [this, i, editor](Control* sender, MouseEventArgs args)
+		_menus[i]->OnMouseLeave += [this, i](Control* sender, MouseEventArgs args)
 		{
 			if (!_buttons[i]->Rectangle.Contains(args.X, args.Y))
 			{
-				DropdownMenu* menu = _menus[i];
-				menu->Active = false;
-				RectangleBox invalidationRectangle = RectangleBox(menu->Rectangle.X, menu->Rectangle.Y, menu->Rectangle.Width + 2, menu->Rectangle.Height + 1);
-				editor->Invalidate(invalidationRectangle);
+				_menus[i]->Active = false;
 			}
 		};
-
 	}
 }
 
@@ -68,26 +59,37 @@ NavbarMenu::~NavbarMenu()
 		delete _buttons[i];
 }
 
-void NavbarMenu::Draw(RectangleBox rectangle, HANDLE console)
+void NavbarMenu::Draw(RectangleBox rectangle)
 {
-	DrawRectangle(rectangle.Intersection(Rectangle), BackgroundColor, console);
-	for (int i = 0; i < _buttons.size(); i++)
-		_buttons[i]->Draw(rectangle, console);
+	_graphics->DrawRectangle(rectangle.Intersection(Rectangle), BackgroundColor);
+	for (Button* button: _buttons)
+		if (button->Active)
+		button->Draw(rectangle);
+
+	for (DropdownMenu* menu : _menus)
+		if (menu->Active)
+			menu->Draw(rectangle);
 }
 
 Control* NavbarMenu::HandleMouseEvent(MouseEventArgs args)
 {
 	for (DropdownMenu* menu : _menus)
 	{
-		Control* control = menu->HandleMouseEvent(args);
-		if (control)
-			return control;
+		if (menu->Active)
+		{
+			Control* control = menu->HandleMouseEvent(args);
+			if (control)
+				return control;
+		}
 	}
 	for (Button* button : _buttons)
 	{
-		Control* control = button->HandleMouseEvent(args);
-		if (control)
-			return control;
+		if (button->Active)
+		{
+			Control* control = button->HandleMouseEvent(args);
+			if (control)
+				return control;
+		}
 	}
 	return nullptr;
 }
