@@ -90,6 +90,9 @@ Control* InputModal::HandleMouseEvent(MouseEventArgs args)
 				control->Rectangle.Y += deltaY;
 			}
 
+			TextInput->InputPoint.X += deltaX;
+			TextInput->InputPoint.Y += deltaY;
+
 			_oldPosition = { args.X, args.Y };
 
 			_editor->Invalidate(oldRectangle.Union(newRectangle));
