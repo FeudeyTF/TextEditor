@@ -2,8 +2,8 @@
 #include <iostream>
 #include <string>
 #include <windows.h>
-#include "Color.h";
-#include "../Event/Event.h";
+#include "Color.h"
+#include "../Event/Event.h"
 #include "EventArgs/MouseEventArgs.h"
 #include "EventArgs/KeyEventArgs.h"
 #include "Rectangle.h"
@@ -45,4 +45,6 @@ class Control
 	protected: void DrawLine(int x, int y, int width, char start, char end, char mid, Color color, HANDLE console);
 
 	protected: void CreateText(int x, int y, RectangleBox rectangle, string text, Color color, HANDLE console);
+
+	protected: int Clamp(int value, int min, int max);
 };

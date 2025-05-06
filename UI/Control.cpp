@@ -1,4 +1,4 @@
-#include "Control.h";
+#include "Control.h"
 
 Control::Control(RectangleBox rectangle, Color color)
 {
@@ -124,7 +124,7 @@ void Control::DrawLine(int x, int y, int width, char start, char end, char mid, 
 		width--;
 	if (end != -1)
 		width--;
-	SetConsoleCursorPosition(console, { (short)x, (short)y, });
+	SetConsoleCursorPosition(console, { (short)Clamp(x, 0, 120), (short)Clamp(y, 0, 30), });
 	string line = "";
 	if (start != -1)
 		line += start;
@@ -145,9 +145,14 @@ void Control::CreateText(int x, int y, RectangleBox rectangle, string text, Colo
 	for (int i = 0; i < min(rectangle.Width, text.size()); i++)
 		s += text[i];
 
-	COORD coords = { x, y };
-	SetConsoleCursorPosition(console, coords);
+	Point point = { Clamp(x, 0, 120), Clamp(y, 0, 30) };
+	SetConsoleCursorPosition(console, point);
 	cout << s;
 
 	SetConsoleTextAttribute(console, DEFAULT_COLOR);
+}
+
+int Control::Clamp(int value, int min, int max)
+{
+	return max(min, min(value, max));
 }

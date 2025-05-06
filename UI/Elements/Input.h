@@ -1,7 +1,6 @@
 #pragma once
 #include "../Control.h"
 
-typedef COORD Point;
 
 class Input : public Control
 {
