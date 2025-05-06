@@ -26,6 +26,16 @@ RectangleBox RectangleBox::Intersection(RectangleBox rectangle)
     return RectangleBox(startX, startY, endX - startX, endY - startY);
 }
 
+RectangleBox RectangleBox::Union(RectangleBox rectangle)
+{
+    int startX = X < rectangle.X ? X : rectangle.X;
+    int startY = Y < rectangle.Y ? Y : rectangle.Y;
+    int endX = (X + Width) > (rectangle.X + rectangle.Width) ? (X + Width) : (rectangle.X + rectangle.Width);
+    int endY = (Y + Height) > (rectangle.Y + rectangle.Height) ? (Y + Height) : (rectangle.Y + rectangle.Height);
+    
+    return RectangleBox(startX, startY, endX - startX, endY - startY);
+}
+
 bool RectangleBox::Contains(RectangleBox rectangle)
 {
     return rectangle.X >= X && 
@@ -42,4 +52,9 @@ RectangleBox RectangleBox::WithOffset(int offset)
 RectangleBox RectangleBox::GetCenteredRectangle(int width, int height)
 {
     return RectangleBox(X + (Width - width) / 2, Y + (Height - height) / 2, width, height);
+}
+
+Point RectangleBox::Center()
+{
+    return { X + Width / 2, Y + Height / 2 };
 }

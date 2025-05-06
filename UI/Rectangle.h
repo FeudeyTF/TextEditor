@@ -1,4 +1,6 @@
 #pragma once
+#include "Point.h"
+
 class RectangleBox  
 {
 	public: int X;  
@@ -16,10 +18,14 @@ class RectangleBox
 	public: bool Contains(int x, int y);  
 
 	public: RectangleBox Intersection(RectangleBox rectangle);
+
+	public: RectangleBox Union(RectangleBox rectangle);
 	  
 	public: bool Contains(RectangleBox rectangle);
 
 	public: RectangleBox WithOffset(int offset);
 
 	public: RectangleBox GetCenteredRectangle(int width, int height);
+
+	public: Point Center();
 };
