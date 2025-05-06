@@ -1,8 +1,7 @@
 #include "InputModal.h"
 
-InputModal::InputModal(String text, RectangleBox rectangle, Color modalColor, Color inputColor, TextEditor* editor, Graphics* graphics) : Modal(text, rectangle, modalColor, graphics)
+InputModal::InputModal(String text, RectangleBox rectangle, Color modalColor, Color inputColor, Graphics* graphics) : Modal(text, rectangle, modalColor, graphics)
 {
-	_editor = editor;
 	CloseButton = new Button(L"X", {rectangle.X + rectangle.Width - 3, rectangle.Y, 3, 1}, BACKGROUND_RED | FOREGROUND_BRIGHT_WHITE, graphics);
 	CloseButton->OnClick += bind(&InputModal::HandleCloseButtonClick, this, placeholders::_1, placeholders::_2);
 	
@@ -45,6 +44,11 @@ void InputModal::Draw(RectangleBox rectangle)
 	_graphics->CreateText(Rectangle.X + (Rectangle.Width - (int)Title.size()) / 2, Rectangle.Y + 1, rectangle, Title, BackgroundColor);
 	for(Control* control : _controls)
 		control->Draw(rectangle);
+}
+
+RectangleBox InputModal::GetInvalidationRectangle()
+{
+	return _invalidationBox;
 }
 
 Control* InputModal::HandleKeyEvent(KeyEventArgs args)
@@ -99,7 +103,7 @@ Control* InputModal::HandleMouseEvent(MouseEventArgs args)
 
 			_oldPosition = { args.X, args.Y };
 
-			_editor->Invalidate(newRectangle.Union(oldRectangle));
+			_invalidationBox = newRectangle.Union(oldRectangle);
 			return this;
 		}
 	}

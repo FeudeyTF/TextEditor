@@ -10,5 +10,7 @@ class DropdownMenu : public Control
 	public: virtual void Draw(RectangleBox rectangle) override;
 
 	public: virtual Control* HandleMouseEvent(MouseEventArgs args) override;
+
+	public: virtual RectangleBox GetInvalidationRectangle() override;
 };
 

@@ -27,6 +27,8 @@ class RectangleBox
 
 	public: RectangleBox GetCenteredRectangle(int width, int height);
 
+	public: RectangleBox GetShadow();
+
 	public: Point Center();
 
 	public: operator SMALL_RECT();

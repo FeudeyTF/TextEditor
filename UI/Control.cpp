@@ -13,6 +13,11 @@ void Control::Draw(RectangleBox rectangle)
 {
 }
 
+RectangleBox Control::GetInvalidationRectangle()
+{
+	return Rectangle;
+}
+
 Control* Control::HandleKeyEvent(KeyEventArgs args)
 {
 	return nullptr;

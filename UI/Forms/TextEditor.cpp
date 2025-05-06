@@ -70,7 +70,7 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	_controls.push_back(TextInput);
 	_controls.push_back(menu);
 
-	FileNameInputModal = new InputModal(L"Enter new file name", ConsoleBox.GetCenteredRectangle(80, 6), BACKGROUND_WHITE, BACKGROUND_CYAN, this, _graphics);
+	FileNameInputModal = new InputModal(L"Enter new file name", ConsoleBox.GetCenteredRectangle(80, 6), BACKGROUND_WHITE, BACKGROUND_CYAN, _graphics);
 	FileNameInputModal->OnClose += bind(&TextEditor::HandleFileNameModalClose, this, placeholders::_1, placeholders::_2);
 	FileNameInputModal->OnSubmit += bind(&TextEditor::HandleFileNameModalSubmit, this, placeholders::_1, placeholders::_2);
 	_modals.push_back(FileNameInputModal);
@@ -106,24 +106,23 @@ void TextEditor::Run()
 	{
 		if (!ReadConsoleInput(_inputConsole, inputBuffer, 128, &recordsCount))
 			return;
-		//SetConsoleCursorPosition(_outputConsole, _textInput->InputPoint);
 		for (DWORD i = 0; i < recordsCount; i++)
 		{
 			switch (inputBuffer[i].EventType)
 			{
-			case KEY_EVENT:
-				HandleKeyEvent(inputBuffer[i].Event.KeyEvent);
-				break;
+				case KEY_EVENT:
+					HandleKeyEvent(inputBuffer[i].Event.KeyEvent);
+					break;
 
-			case MOUSE_EVENT:
-				HandleMouseEvent(inputBuffer[i].Event.MouseEvent);
-				break;
+				case MOUSE_EVENT:
+					HandleMouseEvent(inputBuffer[i].Event.MouseEvent);
+					break;
 
-			case WINDOW_BUFFER_SIZE_EVENT:
-			case FOCUS_EVENT:
-			case MENU_EVENT:
-			default:
-				break;
+				case WINDOW_BUFFER_SIZE_EVENT:
+				case FOCUS_EVENT:
+				case MENU_EVENT:
+				default:
+					break;
 			}
 		}
 	}
@@ -141,7 +140,7 @@ void TextEditor::HandleMouseEvent(MOUSE_EVENT_RECORD args)
 			CONSOLE_CURSOR_INFO cursor = { 1, false };
 			SetConsoleCursorInfo(_outputConsole, &cursor);
 			updatedControl->Draw(ConsoleBox);
-			Invalidate(updatedControl->Rectangle);
+			Invalidate(updatedControl->GetInvalidationRectangle());
 			return;
 		}
 	}
@@ -156,7 +155,7 @@ void TextEditor::HandleMouseEvent(MOUSE_EVENT_RECORD args)
 			CONSOLE_CURSOR_INFO cursor = { 1, false };
 			SetConsoleCursorInfo(_outputConsole, &cursor);
 			updatedControl->Draw(ConsoleBox);
-			Invalidate(updatedControl->Rectangle);
+			Invalidate(updatedControl->GetInvalidationRectangle());
 			return;
 		}
 	}
@@ -175,7 +174,7 @@ void TextEditor::HandleKeyEvent(KEY_EVENT_RECORD args)
 		{
 			CONSOLE_CURSOR_INFO cursor = { 1, true };
 			SetConsoleCursorInfo(_outputConsole, &cursor);
-			Invalidate(updatedControl->Rectangle);
+			Invalidate(updatedControl->GetInvalidationRectangle());
 			return;
 		}
 	}
@@ -189,7 +188,7 @@ void TextEditor::HandleKeyEvent(KEY_EVENT_RECORD args)
 		{
 			CONSOLE_CURSOR_INFO cursor = { 1, true };
 			SetConsoleCursorInfo(_outputConsole, &cursor);
-			Invalidate(updatedControl->Rectangle);
+			Invalidate(updatedControl->GetInvalidationRectangle());
 			return;
 		}
 	}

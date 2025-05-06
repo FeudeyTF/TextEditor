@@ -33,6 +33,8 @@ class Control
 
 	public: virtual void Draw(RectangleBox rectangle);
 
+	public: virtual RectangleBox GetInvalidationRectangle();
+
 	public: virtual Control* HandleMouseEvent(MouseEventArgs args);
 
 	public: virtual Control* HandleKeyEvent(KeyEventArgs args);

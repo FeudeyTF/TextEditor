@@ -7,8 +7,8 @@ DropdownMenu::DropdownMenu(RectangleBox rectangle, Color color, vector<Button*> 
 
 void DropdownMenu::Draw(RectangleBox rectangle)
 {
-	_graphics->DrawShadow(Rectangle.Intersection(rectangle));
-	_graphics->DrawBox(Rectangle, rectangle, BackgroundColor, true);
+	_graphics->DrawShadow(Rectangle);
+	_graphics->DrawBox(Rectangle, Rectangle, BackgroundColor, true);
 
 	for (int i = 0; i < _buttons.size(); i++)
 	{
@@ -16,10 +16,15 @@ void DropdownMenu::Draw(RectangleBox rectangle)
 		_buttons[i]->Rectangle.Height = 1;
 		_buttons[i]->Rectangle.X = Rectangle.X + (Rectangle.Width - _buttons[i]->Rectangle.Width) / 2;
 		_buttons[i]->Rectangle.Y = Rectangle.Y + i + 1;
-		_buttons[i]->Draw(rectangle);
+		_buttons[i]->Draw(Rectangle);
 	}
 
 	_graphics->Invalidate();
+}
+
+RectangleBox DropdownMenu::GetInvalidationRectangle()
+{
+	return { Rectangle.X, Rectangle.Y, Rectangle.Width + 2, Rectangle.Height + 1 };
 }
 
 Control* DropdownMenu::HandleMouseEvent(MouseEventArgs args)
@@ -32,8 +37,6 @@ Control* DropdownMenu::HandleMouseEvent(MouseEventArgs args)
 				return button;
 		}
 	}
-
-	Control::HandleMouseEvent(args);
-
-	return nullptr;
+	
+	return Control::HandleMouseEvent(args);
 }

@@ -54,6 +54,12 @@ RectangleBox RectangleBox::GetCenteredRectangle(int width, int height)
     return RectangleBox(X + (Width - width) / 2, Y + (Height - height) / 2, width, height);
 }
 
+RectangleBox RectangleBox::GetShadow()
+{
+    return RectangleBox(X, Y, Width + 2, Height + 1);
+}
+
+
 Point RectangleBox::Center()
 {
     return { X + Width / 2, Y + Height / 2 };

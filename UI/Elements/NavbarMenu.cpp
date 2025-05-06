@@ -64,7 +64,7 @@ void NavbarMenu::Draw(RectangleBox rectangle)
 	_graphics->DrawRectangle(rectangle.Intersection(Rectangle), BackgroundColor);
 	for (Button* button: _buttons)
 		if (button->Active)
-		button->Draw(rectangle);
+			button->Draw(rectangle);
 
 	for (DropdownMenu* menu : _menus)
 		if (menu->Active)
