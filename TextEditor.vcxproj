@@ -127,6 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\Point.cpp" />
+    <ClCompile Include="UI\Modals\InputModal.cpp" />
+    <ClCompile Include="UI\Modal.cpp" />
     <ClCompile Include="UI\Rectangle.cpp" />
     <ClCompile Include="UI\Elements\DropdownMenu.cpp" />
     <ClCompile Include="UI\Elements\Input.cpp" />
@@ -142,6 +145,9 @@
     <ClCompile Include="UI\Forms\TextEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\Point.h" />
+    <ClInclude Include="UI\Modals\InputModal.h" />
+    <ClInclude Include="UI\Modal.h" />
     <ClInclude Include="UI\Rectangle.h" />
     <ClInclude Include="UI\Elements\DropdownMenu.h" />
     <ClInclude Include="UI\Elements\Input.h" />

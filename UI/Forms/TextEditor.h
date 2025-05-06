@@ -3,7 +3,7 @@
 #include "../Elements/Box.h"
 #include "../Elements/Input.h"
 #include "../Modals/InputModal.h"
-
+class InputModal;
 class TextEditor
 {
     public: InputModal* FileNameInputModal;

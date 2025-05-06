@@ -68,7 +68,7 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	_controls.push_back(box);
 	_controls.push_back(TextInput);
 
-	FileNameInputModal = new InputModal("Enter new file name", ConsoleBox.GetCenteredRectangle(80, 6), BACKGROUND_WHITE, BACKGROUND_CYAN);
+	FileNameInputModal = new InputModal("Enter new file name", ConsoleBox.GetCenteredRectangle(80, 6), BACKGROUND_WHITE, BACKGROUND_CYAN, this);
 	FileNameInputModal->OnClose += bind(&TextEditor::HandleFileNameModalClose, this, placeholders::_1, placeholders::_2);
 	FileNameInputModal->OnSubmit += bind(&TextEditor::HandleFileNameModalSubmit, this, placeholders::_1, placeholders::_2);
 	_modals.push_back(FileNameInputModal);
@@ -232,12 +232,9 @@ void TextEditor::HandleSaveButtonClick(Control* sender, MouseEventArgs args)
 
 void SaveFileWithText(string filePath, string text)
 {
-	if (!text.empty())
-	{
-		string buffer;
-		ofstream file;
-		file.open(filePath);
-		file << text;
-		file.close();
-	}
+	string buffer;
+	ofstream file;
+	file.open(filePath);
+	file << text;
+	file.close();
 }

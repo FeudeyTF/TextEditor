@@ -1,7 +1,8 @@
 #include "InputModal.h"
 
-InputModal::InputModal(string text, RectangleBox rectangle, Color modalColor, Color inputColor) : Modal(text, rectangle, modalColor)
+InputModal::InputModal(string text, RectangleBox rectangle, Color modalColor, Color inputColor, TextEditor* editor) : Modal(text, rectangle, modalColor)
 {
+	_editor = editor;
 	CloseButton = new Button("X", {rectangle.X + rectangle.Width - 3, rectangle.Y, 3, 1}, BACKGROUND_RED | FOREGROUND_BRIGHT_WHITE);
 	CloseButton->OnClick += bind(&InputModal::HandleCloseButtonClick, this, placeholders::_1, placeholders::_2);
 	
@@ -16,6 +17,8 @@ InputModal::InputModal(string text, RectangleBox rectangle, Color modalColor, Co
 	_controls.push_back(CloseButton);
 	_controls.push_back(SubmitButton);
 	_controls.push_back(TextInput);
+
+	_oldPosition = { -1, -1 };
 }
 
 InputModal::~InputModal()
@@ -39,7 +42,7 @@ void InputModal::Draw(RectangleBox rectangle, HANDLE console)
 	DrawShadow(Rectangle.Intersection(rectangle), console);
 	DrawRectangle(Rectangle.Intersection(rectangle), BackgroundColor, console);
 	DrawBox(Rectangle.WithOffset(1), rectangle, BackgroundColor, true, console);
-	CreateText(Rectangle.X + (Rectangle.Width - Title.size()) / 2, Rectangle.Y + 1, rectangle, Title, BackgroundColor, console);
+	CreateText(Rectangle.X + (Rectangle.Width - (int)Title.size()) / 2, Rectangle.Y + 1, rectangle, Title, BackgroundColor, console);
 	for(Control* control : _controls)
 		control->Draw(rectangle, console);
 }
@@ -48,4 +51,50 @@ Control* InputModal::HandleKeyEvent(KeyEventArgs args)
 {
 	TextInput->HandleKeyEvent(args);
 	return this;
+}
+
+Control* InputModal::HandleMouseEvent(MouseEventArgs args)
+{
+	Control* result = Modal::HandleMouseEvent(args);
+	if (result != nullptr)
+		return result;
+
+	if (args.Record.dwEventFlags != MOUSE_MOVED)
+	{
+		if (args.Record.dwButtonState)
+			_oldPosition = { args.X, args.Y };
+		else
+			_oldPosition = { -1, -1 };
+	}
+
+	if (args.EventType == MouseEventType::MouseMoved && _oldPosition.X != -1 && _oldPosition.Y != -1)
+	{
+		int deltaX = args.X - _oldPosition.X;
+		int deltaY = args.Y - _oldPosition.Y;
+		if (deltaX != 0 || deltaY != 0)
+		{
+			RectangleBox oldRectangle = Rectangle;
+			oldRectangle.Width += 2;
+			oldRectangle.Height++;
+
+			Rectangle.X += deltaX;
+			Rectangle.Y += deltaY;
+
+			RectangleBox newRectangle = Rectangle;
+			newRectangle.Width += 2;
+			newRectangle.Height++;
+
+			for (Control* control : _controls)
+			{
+				control->Rectangle.X += deltaX;
+				control->Rectangle.Y += deltaY;
+			}
+
+			_oldPosition = { args.X, args.Y };
+
+			_editor->Invalidate(oldRectangle.Union(newRectangle));
+			return nullptr;
+		}
+	}
+	return nullptr;
 }
