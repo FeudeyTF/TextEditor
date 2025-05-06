@@ -4,7 +4,6 @@ enum MouseEventType
 {
     LeftMouseButton,
     RightMouseButton,
-    MouseHover,
     DoubleClick,
     HorizontalWheel,
     VerticalWheel,

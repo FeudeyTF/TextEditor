@@ -1,4 +1,4 @@
-#include "Button.h";
+#include "Button.h"
 
 Button::Button(string text, RectangleBox rectangle, Color color) : Control(rectangle, color)
 {
@@ -10,6 +10,6 @@ void Button::Draw(RectangleBox rectangle, HANDLE console)
 	DrawRectangle(Rectangle.Intersection(rectangle), BackgroundColor, console);
 	if (Text != "")
 	{
-		CreateText(Rectangle.X + (Rectangle.Width - Text.size()) / 2, Rectangle.Y + Rectangle.Height / 2, rectangle, Text, BackgroundColor, console);
+		CreateText(Rectangle.X + (Rectangle.Width - (int)Text.size()) / 2, Rectangle.Y + Rectangle.Height / 2, rectangle, Text, BackgroundColor, console);
 	}
 }

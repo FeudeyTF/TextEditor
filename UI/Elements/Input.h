@@ -1,7 +1,6 @@
 #pragma once
 #include "../Control.h"
 
-
 class Input : public Control
 {
 	public: string Text;

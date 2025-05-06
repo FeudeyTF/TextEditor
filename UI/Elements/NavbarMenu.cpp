@@ -1,4 +1,4 @@
-#include "NavbarMenu.h";
+#include "NavbarMenu.h"
 
 NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> buttons, vector<DropdownMenu*> menus, TextEditor* editor) : Control(rectangle, color)
 {
@@ -7,7 +7,7 @@ NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> butt
 	int maxTextSize = 0;
 	for (Button* button : buttons)
 		if (button->Text.size() > maxTextSize)
-			maxTextSize = button->Text.size();
+			maxTextSize = (int)button->Text.size();
 	maxTextSize += 2;
 
 	for (int i = 0; i < buttons.size(); i++)

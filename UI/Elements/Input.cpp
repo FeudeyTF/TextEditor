@@ -75,7 +75,7 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 				if (InputPoint.X == Rectangle.X)
 				{
 					InputPoint.Y--;
-					for (int i = Text.size() - 1; i >= 0 && Text[i] != '\n'; i--)
+					for (int i = (int)Text.size() - 1; i >= 0 && Text[i] != '\n'; i--)
 						InputPoint.X++;
 				}
 				else
