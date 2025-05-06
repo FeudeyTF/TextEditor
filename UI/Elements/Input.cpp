@@ -34,7 +34,8 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 				else
 					return nullptr;
 			}
-			Text.insert(index, 1, args.Char);
+			Text += args.Char;
+		//	Text.insert(index, 1, args.Char);
 			InputPoint.X++;
 			SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 			return this;

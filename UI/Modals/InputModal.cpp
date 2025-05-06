@@ -48,7 +48,7 @@ void InputModal::Draw(RectangleBox rectangle)
 
 RectangleBox InputModal::GetInvalidationRectangle()
 {
-	return _invalidationBox;
+	return { 0,0,120,30 };
 }
 
 Control* InputModal::HandleKeyEvent(KeyEventArgs args)

@@ -37,9 +37,17 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	Button* exitButton = new Button(L"Exit", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR, _graphics);
 	saveButton->OnClick += bind(&TextEditor::HandleSaveButtonClick, this, placeholders::_1, placeholders::_2);
 	exitButton->OnClick += OnExitButtonClick;
+
+	Button* findButton = new Button(L"Find", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR, _graphics);
+	findButton->OnMouseEnter += OnButtonEnter;
+	findButton->OnMouseLeave += OnButtonLeave;
+	findButton->OnClick += bind(&TextEditor::HandleFindButtonClick, this, placeholders::_1, placeholders::_2);
+
 	navbarButtons.push_back(fileButton);
 	navbarButtons.push_back(saveButton);
 	navbarButtons.push_back(exitButton);
+	navbarButtons.push_back(findButton);
+
 	for (Button* button : navbarButtons)
 	{
 		button->OnMouseEnter += OnButtonEnter;
@@ -64,16 +72,24 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	NavbarMenu* menu = new NavbarMenu({ 0, 0, 120, 1 }, NAVBAR_COLOR, navbarButtons, { fileMenu }, _graphics);
 
 	Box* box = new Box({ 0, 1, 120, 29 }, true, true, EDITOR_COLOR, _graphics);
-	TextInput = new Input({ 1, 2, 118, 27 }, EDITOR_COLOR, _graphics);
+	TextInput = new SearchInput({ 1, 2, 118, 27 }, EDITOR_COLOR, _graphics);
 
 	_controls.push_back(box);
 	_controls.push_back(TextInput);
 	_controls.push_back(menu);
 
-	FileNameInputModal = new InputModal(L"Enter new file name", ConsoleBox.GetCenteredRectangle(80, 6), BACKGROUND_WHITE, BACKGROUND_CYAN, _graphics);
+	FileNameInputModal = new InputModal(L"Enter file name", ConsoleBox.GetCenteredRectangle(80, 6), BACKGROUND_WHITE, BACKGROUND_CYAN, _graphics);
 	FileNameInputModal->OnClose += bind(&TextEditor::HandleFileNameModalClose, this, placeholders::_1, placeholders::_2);
 	FileNameInputModal->OnSubmit += bind(&TextEditor::HandleFileNameModalSubmit, this, placeholders::_1, placeholders::_2);
+	
+
+	SearchInpuModal = new InputModal(L"Enter string to find", ConsoleBox.GetCenteredRectangle(80, 6), BACKGROUND_WHITE, BACKGROUND_CYAN, _graphics);
+	SearchInpuModal->OnClose += bind(&TextEditor::HandleSearchModalClose, this, placeholders::_1, placeholders::_2);
+	SearchInpuModal->OnSubmit += bind(&TextEditor::HandleSearchModalSubmit, this, placeholders::_1, placeholders::_2);
+
+	
 	_modals.push_back(FileNameInputModal);
+	_modals.push_back(SearchInpuModal);
 }
 
 TextEditor::~TextEditor()
@@ -235,6 +251,30 @@ void TextEditor::HandleSaveButtonClick(Control* sender, MouseEventArgs args)
 	}
 	else
 		SaveFileWithText(FilePath, TextInput->Text);
+}
+
+
+void TextEditor::HandleSearchModalClose(Modal* modal, int arg)
+{
+	SearchInpuModal->Active = false;
+	RectangleBox modalBox = SearchInpuModal->Rectangle;
+	Invalidate({ modalBox.X, modalBox.Y, modalBox.Width + 2, modalBox.Height + 1 });
+}
+
+void TextEditor::HandleSearchModalSubmit(Modal* modal, int arg)
+{
+	TextInput->SearchPattern = SearchInpuModal->TextInput->Text;
+	SearchInpuModal->Active = false;
+	RectangleBox modalBox = SearchInpuModal->Rectangle;
+	modalBox.Width += 2;
+	modalBox.Height++;
+	Invalidate(modalBox.Union(SearchInpuModal->GetInvalidationRectangle()));
+}
+
+void TextEditor::HandleFindButtonClick(Control* sender, MouseEventArgs args)
+{
+	SearchInpuModal->Active = true;
+	SearchInpuModal->Draw(ConsoleBox);
 }
 
 void SaveFileWithText(String filePath, String text)

@@ -1,14 +1,16 @@
 #pragma once
 #include "../Elements/NavbarMenu.h"
 #include "../Elements/Box.h"
-#include "../Elements/Input.h"
+#include "../Elements/SearchInput.h"
 #include "../Modals/InputModal.h"
-class InputModal;
+
 class TextEditor
 {
     public: InputModal* FileNameInputModal;
 
-    public: Input* TextInput;
+    public: InputModal* SearchInpuModal;
+
+    public: SearchInput* TextInput;
 
     public: String FilePath;
 
@@ -41,5 +43,11 @@ class TextEditor
     private: void HandleFileNameModalClose(Modal* sender, int arg);
 
     private: void HandleFileNameModalSubmit(Modal* sender, int arg);
+
+    private: void HandleFindButtonClick(Control* sender, MouseEventArgs args);
+
+    private: void HandleSearchModalClose(Modal* sender, int arg);
+
+    private: void HandleSearchModalSubmit(Modal* sender, int arg);
 }; 
 
