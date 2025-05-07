@@ -62,6 +62,8 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	Button* fileMenuNewButton = new Button(L"New", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR, _graphics);
 	fileMenuNewButton->OnMouseEnter += OnButtonEnter;
 	fileMenuNewButton->OnMouseLeave += OnButtonLeave;
+	fileMenuNewButton->OnClick += bind(&TextEditor::HandleNewButtonClick, this, placeholders::_1, placeholders::_2);
+
 
 	Button* fileMenuOpenButton = new Button(L"Open", RectangleBox{ 0, 0, 0, 0 }, NAVBAR_COLOR, _graphics);
 	fileMenuOpenButton->OnMouseEnter += OnButtonEnter;
@@ -86,7 +88,6 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 	SearchInpuModal = new InputModal(L"Enter string to find", ConsoleBox.GetCenteredRectangle(80, 6), BACKGROUND_WHITE, BACKGROUND_CYAN, _graphics);
 	SearchInpuModal->OnClose += bind(&TextEditor::HandleSearchModalClose, this, placeholders::_1, placeholders::_2);
 	SearchInpuModal->OnSubmit += bind(&TextEditor::HandleSearchModalSubmit, this, placeholders::_1, placeholders::_2);
-
 	
 	_modals.push_back(FileNameInputModal);
 	_modals.push_back(SearchInpuModal);
@@ -284,4 +285,11 @@ void SaveFileWithText(String filePath, String text)
 	file.imbue(locale(file.getloc(), new codecvt_utf8_utf16<wchar_t, 0x10ffff, codecvt_mode(consume_header | generate_header)>));
 	file << text;
 	file.close();
+}
+
+void TextEditor::HandleNewButtonClick(Control* sender, MouseEventArgs args)
+{
+	TextInput->Text.clear();
+	FilePath = L"";
+	Invalidate(ConsoleBox);
 }

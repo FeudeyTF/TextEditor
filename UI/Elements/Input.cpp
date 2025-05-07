@@ -20,7 +20,22 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 {
 	if (args.Status == KeyStatus::Pressed)
 	{
-		int index = InputPoint.X - Rectangle.X + (InputPoint.Y - Rectangle.Y) * Rectangle.Width;
+		int index = 0;
+		Point startPoint = { Rectangle.X, Rectangle.Y };
+		for (int i = 0; i < Text.size(); i++)
+		{
+			index++;
+			startPoint.X++;
+			if (Text[i] == '\n')
+			{
+				startPoint.Y++;
+				startPoint.X++;
+			}
+			if (startPoint.X == InputPoint.X && startPoint.Y == InputPoint.Y)
+				break;
+		}
+
+
 		if (args.Char > 31)
 		{
 			if (InputPoint.X == Rectangle.X + Rectangle.Width)
@@ -34,8 +49,8 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 				else
 					return nullptr;
 			}
-			Text += args.Char;
-		//	Text.insert(index, 1, args.Char);
+			//Text += args.Char;
+			Text.insert(index, 1, args.Char);
 			InputPoint.X++;
 			SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 			return this;
@@ -47,7 +62,7 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 				InputPoint.Y++;
 				InputPoint.X = Rectangle.X;
 				SetConsoleCursorPosition(args.OutputConsole, InputPoint);
-				Text += L'\n';
+				Text.insert(index, 1, '\n');
 			}
 			return this;
 		}
@@ -82,7 +97,7 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 			}
 			else if (args.VirtualKeyCode == UP_ARROW_KEY)
 			{
-				if(InputPoint.Y > Rectangle.Y)
+				if (InputPoint.Y > Rectangle.Y)
 					InputPoint.Y--;
 			}
 			else if (args.VirtualKeyCode == DOWN_ARROW_KEY)

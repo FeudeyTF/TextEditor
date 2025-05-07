@@ -49,5 +49,7 @@ class TextEditor
     private: void HandleSearchModalClose(Modal* sender, int arg);
 
     private: void HandleSearchModalSubmit(Modal* sender, int arg);
+
+    private: void HandleNewButtonClick(Control* sender, MouseEventArgs args);
 }; 
 
