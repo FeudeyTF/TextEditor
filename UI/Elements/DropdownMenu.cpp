@@ -18,8 +18,6 @@ void DropdownMenu::Draw(RectangleBox rectangle)
 		_buttons[i]->Rectangle.Y = Rectangle.Y + i + 1;
 		_buttons[i]->Draw(Rectangle);
 	}
-
-	_graphics->Invalidate();
 }
 
 RectangleBox DropdownMenu::GetInvalidationRectangle()

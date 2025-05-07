@@ -7,7 +7,7 @@ using namespace std;
 template<typename TSender, typename TArgument>
 class Event
 {
-	public: vector<function<void(TSender, TArgument)>> _handlers;
+	private: vector<function<void(TSender, TArgument)>> _handlers;
 
 	public: Event();
 

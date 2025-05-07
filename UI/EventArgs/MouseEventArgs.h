@@ -10,7 +10,7 @@ class MouseEventArgs
 	public: int X;
 
 	public: int Y;
-		  
+
 	public: MOUSE_EVENT_RECORD Record;
 
 	public: HANDLE OutputConsole;

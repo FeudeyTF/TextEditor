@@ -18,6 +18,7 @@ void OnButtonLeave(Control* sender, MouseEventArgs args)
 {
 	sender->BackgroundColor = NAVBAR_COLOR;
 }
+
 void OnExitButtonClick(Control* sender, MouseEventArgs args)
 {
 	ExitProcess(0);

@@ -35,7 +35,6 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 				break;
 		}
 
-
 		if (args.Char > 31)
 		{
 			if (InputPoint.X == Rectangle.X + Rectangle.Width)

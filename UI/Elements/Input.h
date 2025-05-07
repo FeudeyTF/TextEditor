@@ -8,7 +8,7 @@
 
 class Input : public Control
 {
-	public: wstring  Text;
+	public: String Text;
 
 	public: Point InputPoint;
 
