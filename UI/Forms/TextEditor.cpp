@@ -74,7 +74,7 @@ TextEditor::TextEditor(HANDLE outputConsole, HANDLE inputConsole)
 
 	NavbarMenu* menu = new NavbarMenu({ 0, 0, 120, 1 }, NAVBAR_COLOR, navbarButtons, { fileMenu }, _graphics);
 
-	Box* box = new Box({ 0, 1, 120, 29 }, true, true, EDITOR_COLOR, _graphics);
+	Box* box = new Box({ 0, 1, 120, 29 }, true, EDITOR_COLOR, _graphics);
 	TextInput = new SearchInput({ 1, 2, 118, 27 }, EDITOR_COLOR, _graphics);
 
 	_controls.push_back(box);
