@@ -1,0 +1,46 @@
+output_directory: diagrams
+generate_links:
+  link:
+    .: https://github.com/FeudeyTF/TextEditor/blob/{{ git.commit }}/{{ element.source.path }}#L{{ element.source.line }}  
+diagrams:
+  full:
+    type: class
+    title: TextEditor Structure. Full Version
+    glob:
+      - ./*.cpp
+      - ./*.h
+    exclude:
+      namespaces:
+        - std
+  short:
+    type: class
+    title: TextEditor Structure. Short Version
+    glob:
+      - Event/*.cpp
+      - UI/*.h
+      - Program.cpp
+    exclude:     
+      namespaces:
+        - std                            
+      access: [public, protected, private]
+      relationships:                      
+        - dependency
+  full-std:
+    type: class
+    title: TextEditor Structure. Full Version
+    glob:
+      - ./*.cpp
+      - ./*.h
+  sequence:
+    type: sequence
+    glob:
+      - Event/*.cpp
+      - UI/*.h
+      - Program.cpp
+      - UI/Forms/*.cpp
+      - UI/Forms/*.h
+    exclude:
+      namespaces:
+        - std
+    from:
+    - function: main()
