@@ -14,7 +14,7 @@ class Input : public Control
 
 	public: Input(RectangleBox rectangle, Color color, Graphics* graphics);
 
-	public: virtual void Draw(RectangleBox rectangle);
+	public: virtual void Draw(RectangleBox rectangle) override;
 
 	public: virtual Control* HandleMouseEvent(MouseEventArgs args) override;
 
