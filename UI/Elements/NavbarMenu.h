@@ -1,7 +1,6 @@
 #pragma once
 #include "Button.h"
 #include "DropdownMenu.h"
-#include "../Forms/TextEditor.h"
 
 class NavbarMenu : public Control
 {
