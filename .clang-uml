@@ -7,8 +7,8 @@ diagrams:
     type: class
     title: TextEditor Structure. Full Version
     glob:
-      - ./*.cpp
-      - ./*.h
+      - ./**/*.h
+      - ./**/*.cpp
     exclude:
       namespaces:
         - std
@@ -16,9 +16,8 @@ diagrams:
     type: class
     title: TextEditor Structure. Short Version
     glob:
-      - Event/*.cpp
-      - UI/*.h
-      - Program.cpp
+      - ./**/*.h
+      - ./**/*.cpp
     exclude:     
       namespaces:
         - std                            
@@ -29,18 +28,25 @@ diagrams:
     type: class
     title: TextEditor Structure. Full Version
     glob:
-      - ./*.cpp
-      - ./*.h
-  sequence:
+      - ./**/*.h
+      - ./**/*.cpp
+  main:
     type: sequence
     glob:
-      - Event/*.cpp
-      - UI/*.h
-      - Program.cpp
-      - UI/Forms/*.cpp
-      - UI/Forms/*.h
+      - ./**/*.h
+      - ./**/*.cpp
     exclude:
       namespaces:
         - std
     from:
-    - function: main()
+    - function: main()  
+  invalidation:
+    type: sequence
+    glob:
+      - ./**/*.h
+      - ./**/*.cpp
+    exclude:
+      namespaces:
+        - std
+    from:
+    - function: TextEditor::Invalidate(RectangleBox)
