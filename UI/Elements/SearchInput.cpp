@@ -16,7 +16,7 @@ void SearchInput::Draw(RectangleBox rectangle)
             int yOffset = 0;
             int xOffset = 0;
             bool foundLastNewLine = false;
-            for (int i = index - 1; i >= 0; i--)
+            for (size_t i = index - 1; i >= 0; i--)
             {
                 if (!foundLastNewLine)
                     xOffset++;
