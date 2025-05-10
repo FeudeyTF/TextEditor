@@ -2,13 +2,14 @@
 
 Input::Input(RectangleBox rectangle, Color color, Graphics* graphics) : Control(rectangle, color, graphics)
 {
+	_text = vector<String>(1);
 	InputPoint = { (short)Rectangle.X, (short)Rectangle.Y };
 }
 
 void Input::Draw(RectangleBox rectangle)
 {
 	_graphics->DrawRectangle(Rectangle.Intersection(rectangle), BackgroundColor);
-	_graphics->CreateText(Rectangle.X, Rectangle.Y, rectangle, Text, BackgroundColor);
+	_graphics->CreateText(Rectangle.X, Rectangle.Y, rectangle, GetString(), BackgroundColor);
 }
 
 Control* Input::HandleMouseEvent(MouseEventArgs args)
@@ -20,21 +21,6 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 {
 	if (args.Status == KeyStatus::Pressed)
 	{
-		int index = 0;
-		Point startPoint = { Rectangle.X, Rectangle.Y };
-		for (int i = 0; i < Text.size(); i++)
-		{
-			index++;
-			startPoint.X++;
-			if (Text[i] == '\n')
-			{
-				startPoint.Y++;
-				startPoint.X++;
-			}
-			if (startPoint.X == InputPoint.X && startPoint.Y == InputPoint.Y)
-				break;
-		}
-
 		if (args.Char > 31)
 		{
 			if (InputPoint.X == Rectangle.X + Rectangle.Width)
@@ -42,14 +28,14 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 				if (InputPoint.Y < Rectangle.Height - 1)
 				{
 					InputPoint.Y++;
+					_text.push_back(L"");
 					InputPoint.X = Rectangle.X;
-					Text += L'\n';
 				}
 				else
 					return nullptr;
 			}
-			//Text += args.Char;
-			Text.insert(index, 1, args.Char);
+
+			_text[InputPoint.Y - Rectangle.Y].insert(InputPoint.X - Rectangle.X, 1, args.Char);
 			InputPoint.X++;
 			SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 			return this;
@@ -59,25 +45,30 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 			if (InputPoint.Y < Rectangle.Y + Rectangle.Height - 1)
 			{
 				InputPoint.Y++;
+				_text.push_back(L"");
 				InputPoint.X = Rectangle.X;
 				SetConsoleCursorPosition(args.OutputConsole, InputPoint);
-				Text.insert(index, 1, '\n');
 			}
 			return this;
 		}
 		else if (args.Char == '\b')
 		{
-			if (index > 0)
+			if (InputPoint.Y >= Rectangle.Y && InputPoint.X >= Rectangle.X)
 			{
-				Text.replace(index - 1, 1, L"");
 				if (InputPoint.X == Rectangle.X)
 				{
-					InputPoint.Y--;
-					for (int i = (int)Text.size() - 1; i >= 0 && Text[i] != '\n'; i--)
-						InputPoint.X++;
+					if (InputPoint.Y > Rectangle.Y)
+					{
+						InputPoint.Y--;
+						_text.pop_back();
+						InputPoint.X = _text[InputPoint.Y - Rectangle.Y].size() + Rectangle.X;
+					}
 				}
 				else
+				{
+					_text[InputPoint.Y - Rectangle.Y].replace(InputPoint.X - Rectangle.X - 1, 1, L"");
 					InputPoint.X--;
+				}
 				SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 				return this;
 			}
@@ -91,18 +82,26 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 			}
 			else if (args.VirtualKeyCode == RIGHT_ARROW_KEY)
 			{
-				if (InputPoint.X < Rectangle.X + Rectangle.Width - 1)
+				if (InputPoint.X - Rectangle.X < _text[InputPoint.Y - Rectangle.Y].size())
 					InputPoint.X++;
 			}
 			else if (args.VirtualKeyCode == UP_ARROW_KEY)
 			{
 				if (InputPoint.Y > Rectangle.Y)
+				{
 					InputPoint.Y--;
+					InputPoint.X = _text[InputPoint.Y - Rectangle.Y].size() + Rectangle.X;
+				}
 			}
 			else if (args.VirtualKeyCode == DOWN_ARROW_KEY)
 			{
-				if (InputPoint.Y < Rectangle.Y + Rectangle.Height - 1)
+				if (InputPoint.Y - Rectangle.Y < _text.size())
+				{
+					if (InputPoint.Y - Rectangle.Y == _text.size() - 1)
+						_text.push_back(L"");
 					InputPoint.Y++;
+					InputPoint.X = _text[InputPoint.Y - Rectangle.Y].size() + Rectangle.X;
+				}
 			}
 			SetConsoleCursorPosition(args.OutputConsole, InputPoint);
 
@@ -110,4 +109,20 @@ Control* Input::HandleKeyEvent(KeyEventArgs args)
 
 	}
 	return nullptr;
+}
+
+String Input::GetString()
+{
+	String result = L"";
+	for (int i = 0; i < _text.size() - 1; i++)
+		result += _text[i] + L'\n';
+	result += _text[_text.size() - 1];
+	return result;
+}
+
+void Input::Clear()
+{
+	InputPoint = { (short)Rectangle.X, (short)Rectangle.Y };
+	for (int i = 0; i < _text.size(); i++)
+		_text[i].clear();
 }

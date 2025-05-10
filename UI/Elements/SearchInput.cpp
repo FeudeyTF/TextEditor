@@ -6,30 +6,20 @@ SearchInput::SearchInput(RectangleBox rectangle, Color color, Graphics* graphics
 
 void SearchInput::Draw(RectangleBox rectangle)
 {
+    String text = GetString();
 	_graphics->DrawRectangle(Rectangle.Intersection(rectangle), BackgroundColor);
-	_graphics->CreateText(Rectangle.X, Rectangle.Y, rectangle, Text, BackgroundColor);
+	_graphics->CreateText(Rectangle.X, Rectangle.Y, rectangle, text, BackgroundColor);
     if (!SearchPattern.empty())
     {
-        size_t index = 0;
-        while ((index = Text.find(SearchPattern, index)) != string::npos)
+        for (int i = 0; i < _text.size(); i++)
         {
-            int yOffset = 0;
-            int xOffset = 0;
-            bool foundLastNewLine = false;
-            for (size_t i = index - 1; i >= 0; i--)
+            String text = _text[i];
+            size_t index = 0;
+            while ((index = text.find(SearchPattern, index)) != string::npos)
             {
-                if (!foundLastNewLine)
-                    xOffset++;
-                if (Text[i] == '\n')
-                {
-                    foundLastNewLine = true;
-                    yOffset++;
-                }
+                _graphics->CreateText(Rectangle.X + index, Rectangle.Y + i, rectangle, SearchPattern, BACKGROUND_YELLOW);
+                index += SearchPattern.length();
             }
-            if (foundLastNewLine)
-                xOffset--;
-            _graphics->CreateText(Rectangle.X + xOffset, Rectangle.Y + yOffset, rectangle, SearchPattern, BACKGROUND_YELLOW);
-            index += SearchPattern.length();
         }
     }
 }

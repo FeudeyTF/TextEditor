@@ -8,9 +8,9 @@
 
 class Input : public Control
 {
-	public: String Text;
-
 	public: Point InputPoint;
+
+	protected: vector<String> _text;
 
 	public: Input(RectangleBox rectangle, Color color, Graphics* graphics);
 
@@ -19,5 +19,9 @@ class Input : public Control
 	public: virtual Control* HandleMouseEvent(MouseEventArgs args) override;
 
 	public: virtual Control* HandleKeyEvent(KeyEventArgs args) override;
+
+	public: String GetString();
+
+	public: void Clear();
 };
 

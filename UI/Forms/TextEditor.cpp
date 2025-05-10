@@ -237,8 +237,8 @@ void TextEditor::HandleFileNameModalClose(Modal* modal, int arg)
 
 void TextEditor::HandleFileNameModalSubmit(Modal* modal, int arg)
 {
-	FilePath = FileNameInputModal->TextInput->Text;
-	SaveFileWithText(FilePath, TextInput->Text);
+	FilePath = FileNameInputModal->TextInput->GetString();
+	SaveFileWithText(FilePath, TextInput->GetString());
 	FileNameInputModal->Active = false;
 	RectangleBox modalBox = FileNameInputModal->Rectangle;
 	Invalidate({ modalBox.X, modalBox.Y, modalBox.Width + 2, modalBox.Height + 1 });
@@ -252,7 +252,7 @@ void TextEditor::HandleSaveButtonClick(Control* sender, MouseEventArgs args)
 		FileNameInputModal->Draw(ConsoleBox);
 	}
 	else
-		SaveFileWithText(FilePath, TextInput->Text);
+		SaveFileWithText(FilePath, TextInput->GetString());
 }
 
 
@@ -265,7 +265,7 @@ void TextEditor::HandleSearchModalClose(Modal* modal, int arg)
 
 void TextEditor::HandleSearchModalSubmit(Modal* modal, int arg)
 {
-	TextInput->SearchPattern = SearchInpuModal->TextInput->Text;
+	TextInput->SearchPattern = SearchInpuModal->TextInput->GetString();
 	SearchInpuModal->Active = false;
 	RectangleBox modalBox = SearchInpuModal->Rectangle;
 	modalBox.Width += 2;
@@ -290,7 +290,7 @@ void SaveFileWithText(String filePath, String text)
 
 void TextEditor::HandleNewButtonClick(Control* sender, MouseEventArgs args)
 {
-	TextInput->Text.clear();
+	TextInput->Clear();
 	FilePath = L"";
 	Invalidate(ConsoleBox);
 }
