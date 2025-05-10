@@ -13,6 +13,8 @@ Graphics::Graphics(RectangleBox rectangle, HANDLE outputConsole, HANDLE inputCon
 	_bufferSize.X = rectangle.Width;
 	_bufferSize.Y = rectangle.Height;
 
+	_rectangle = rectangle;
+
 	_writeRegion = rectangle;
 
 	for (int i = 0; i < rectangle.Width * rectangle.Height; i++)
@@ -111,21 +113,18 @@ void Graphics::CreateText(int x, int y, RectangleBox rectangle, String text, Col
 		}
 
 		if (rectangle.Contains(coords.X, coords.Y))
-		{
 			SetChar(coords.X, coords.Y, text[i], color);
-		}
 		coords.X++;
 	}
 }
 
 void Graphics::SetChar(int x, int y, Char c, Color color)
 {
+	if (!_rectangle.Contains(x, y))
+		return;
 	int index = x + _bufferSize.X * y;
-	if (index >= 0 && index < _bufferSize.X * _bufferSize.Y)
-	{
-		_screenBuffer[index].Char.UnicodeChar = c;
-		_screenBuffer[index].Attributes = color;
-	}
+	_screenBuffer[index].Char.UnicodeChar = c;
+	_screenBuffer[index].Attributes = color;
 }
 
 int Graphics::Clamp(int value, int min, int max)

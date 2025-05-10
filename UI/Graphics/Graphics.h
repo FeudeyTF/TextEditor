@@ -18,6 +18,8 @@ class Graphics
 
 	private: CHAR_INFO* _screenBuffer;
 
+	private: RectangleBox _rectangle;
+
 	private: COORD _bufferSize;
 
 	private: COORD _bufferCoords;
