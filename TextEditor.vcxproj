@@ -129,10 +129,10 @@
   <ItemGroup>
     <ClCompile Include="UI\Elements\SearchInput.cpp" />
     <ClCompile Include="UI\Graphics\Graphics.cpp" />
-    <ClCompile Include="UI\Point.cpp" />
+    <ClCompile Include="UI\Graphics\Point.cpp" />
     <ClCompile Include="UI\Modals\InputModal.cpp" />
     <ClCompile Include="UI\Modal.cpp" />
-    <ClCompile Include="UI\Rectangle.cpp" />
+    <ClCompile Include="UI\Graphics\Rectangle.cpp" />
     <ClCompile Include="UI\Elements\DropdownMenu.cpp" />
     <ClCompile Include="UI\Elements\Input.cpp" />
     <ClCompile Include="UI\EventArgs\KeyEventArgs.cpp" />
@@ -149,10 +149,10 @@
   <ItemGroup>
     <ClInclude Include="UI\Elements\SearchInput.h" />
     <ClInclude Include="UI\Graphics\Graphics.h" />
-    <ClInclude Include="UI\Point.h" />
+    <ClInclude Include="UI\Graphics\Point.h" />
     <ClInclude Include="UI\Modals\InputModal.h" />
     <ClInclude Include="UI\Modal.h" />
-    <ClInclude Include="UI\Rectangle.h" />
+    <ClInclude Include="UI\Graphics\Rectangle.h" />
     <ClInclude Include="UI\Elements\DropdownMenu.h" />
     <ClInclude Include="UI\Elements\Input.h" />
     <ClInclude Include="UI\EventArgs\KeyEventArgs.h" />
@@ -162,7 +162,7 @@
     <ClInclude Include="UI\Elements\NavbarMenu.h" />
     <ClInclude Include="UI\Elements\Button.h" />
     <ClInclude Include="UI\EventArgs\MouseEventArgs.h" />
-    <ClInclude Include="UI\Color.h" />
+    <ClInclude Include="UI\Graphics\Color.h" />
     <ClInclude Include="UI\Control.h" />
     <ClInclude Include="Event\Event.h" />
   </ItemGroup>

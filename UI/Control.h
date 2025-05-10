@@ -2,11 +2,9 @@
 #include <iostream>
 #include <string>
 #include <windows.h>
-#include "Color.h"
 #include "../Event/Event.h"
 #include "EventArgs/MouseEventArgs.h"
 #include "EventArgs/KeyEventArgs.h"
-#include "Rectangle.h"
 #include "Graphics/Graphics.h"
 
 using namespace std;
