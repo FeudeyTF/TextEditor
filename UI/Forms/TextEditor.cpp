@@ -270,7 +270,7 @@ void TextEditor::HandleSearchModalSubmit(Modal* modal, int arg)
 	RectangleBox modalBox = SearchInpuModal->Rectangle;
 	modalBox.Width += 2;
 	modalBox.Height++;
-	Invalidate(modalBox.Union(SearchInpuModal->GetInvalidationRectangle()));
+	Invalidate(modalBox.Union(TextInput->GetInvalidationRectangle()));
 }
 
 void TextEditor::HandleFindButtonClick(Control* sender, MouseEventArgs args)
