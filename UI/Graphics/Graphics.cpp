@@ -43,7 +43,7 @@ void Graphics::DrawRectangle(RectangleBox rectangle, Color color)
 
 void Graphics::DrawShadow(RectangleBox rectangle)
 {
-	DrawRectangle(RectangleBox(rectangle.X + 2, rectangle.Y + 1, rectangle.Width, rectangle.Height), BACKGROUND_BLACK);
+	DrawRectangle(rectangle.GetShadow(), BACKGROUND_BLACK);
 }
 
 void Graphics::DrawBox(RectangleBox rectangle, RectangleBox maxRectangle, Color color, bool fill)
