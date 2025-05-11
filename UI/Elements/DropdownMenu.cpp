@@ -1,4 +1,4 @@
-#include "DropdownMenu.h"
+#include "DropdownMenu.hpp"
 
 DropdownMenu::DropdownMenu(RectangleBox rectangle, Color color, vector<Button*> buttons, Graphics* graphics) : Control(rectangle, color, graphics)
 {

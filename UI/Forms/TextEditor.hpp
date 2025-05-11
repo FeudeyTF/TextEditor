@@ -1,8 +1,8 @@
 #pragma once
-#include "../Elements/NavbarMenu.h"
-#include "../Elements/Box.h"
-#include "../Elements/SearchInput.h"
-#include "../Modals/InputModal.h"
+#include "../Elements/NavbarMenu.hpp"
+#include "../Elements/Box.hpp"
+#include "../Elements/SearchInput.hpp"
+#include "../Modals/InputModal.hpp"
 
 class TextEditor
 {

@@ -1,5 +1,5 @@
 #pragma once
-#include "..\Control.h"
+#include "..\Control.hpp"
 
 class Box : public Control
 {

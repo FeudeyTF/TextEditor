@@ -1,7 +1,7 @@
 #pragma once
 
 #include <windows.h>
-#include "MouseEventType.h"
+#include "MouseEventType.hpp"
 
 class MouseEventArgs
 {

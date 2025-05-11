@@ -1,7 +1,7 @@
 #pragma once
 
 #include <windows.h>
-#include "KeyStatus.h"
+#include "KeyStatus.hpp"
 
 class KeyEventArgs
 {

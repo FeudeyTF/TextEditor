@@ -1,5 +1,5 @@
 #pragma once
-#include "Input.h"
+#include "Input.hpp"
 
 class SearchInput : public Input
 {

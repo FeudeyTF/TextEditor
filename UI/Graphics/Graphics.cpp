@@ -1,4 +1,4 @@
-﻿#include "Graphics.h"
+﻿#include "Graphics.hpp"
 
 Graphics::Graphics(RectangleBox rectangle, HANDLE outputConsole, HANDLE inputConsole)
 {

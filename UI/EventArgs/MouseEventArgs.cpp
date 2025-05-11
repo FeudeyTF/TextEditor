@@ -1,4 +1,4 @@
-#include "MouseEventArgs.h"
+#include "MouseEventArgs.hpp"
 
 MouseEventArgs::MouseEventArgs(MOUSE_EVENT_RECORD record, HANDLE outputConsole)
 {

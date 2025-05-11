@@ -1,4 +1,4 @@
-#include "Control.h"
+#include "Control.hpp"
 
 Control::Control(RectangleBox rectangle, Color color, Graphics* graphics)
 {

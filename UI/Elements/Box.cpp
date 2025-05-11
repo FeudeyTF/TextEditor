@@ -1,4 +1,4 @@
-#include "Box.h"
+#include "Box.hpp"
 
 Box::Box(RectangleBox rectangle, bool fill, Color color, Graphics* graphics) : Control(rectangle, color, graphics)
 {

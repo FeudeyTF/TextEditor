@@ -1,4 +1,4 @@
-#include "Rectangle.h"
+#include "Rectangle.hpp"
 
 RectangleBox::RectangleBox(int x, int y, int width, int height)
 {

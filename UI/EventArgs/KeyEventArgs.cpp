@@ -1,4 +1,4 @@
-#include "KeyEventArgs.h"
+#include "KeyEventArgs.hpp"
 KeyEventArgs::KeyEventArgs(KEY_EVENT_RECORD record, HANDLE outputConsole)
 {
 	Record = record;

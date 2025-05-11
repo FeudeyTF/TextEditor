@@ -1,4 +1,4 @@
-#include "InputModal.h"
+#include "InputModal.hpp"
 
 InputModal::InputModal(String text, RectangleBox rectangle, Color modalColor, Color inputColor, Graphics* graphics) : Modal(text, rectangle, modalColor, graphics)
 {

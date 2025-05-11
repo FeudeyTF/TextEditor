@@ -1,4 +1,4 @@
-#include "Button.h"
+#include "Button.hpp"
 
 Button::Button(String text, RectangleBox rectangle, Color color, Graphics* graphics) : Control(rectangle, color, graphics)
 {

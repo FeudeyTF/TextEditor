@@ -1,6 +1,6 @@
 #pragma once
-#include "Button.h"
-#include "DropdownMenu.h"
+#include "Button.hpp"
+#include "DropdownMenu.hpp"
 
 class NavbarMenu : public Control
 {

@@ -1,4 +1,4 @@
-﻿#include "UI/Forms/TextEditor.h"
+﻿#include "UI/Forms/TextEditor.hpp"
 
 int main()
 {

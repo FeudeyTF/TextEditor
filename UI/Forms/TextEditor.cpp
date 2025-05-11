@@ -1,4 +1,4 @@
-#include "TextEditor.h"
+#include "TextEditor.hpp"
 #include <fstream> 
 #include <codecvt>
 

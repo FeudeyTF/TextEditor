@@ -1,4 +1,4 @@
-#include "Input.h"
+#include "Input.hpp"
 
 Input::Input(RectangleBox rectangle, Color color, Graphics* graphics) : Control(rectangle, color, graphics)
 {

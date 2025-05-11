@@ -1,4 +1,4 @@
-#include "Modal.h"
+#include "Modal.hpp"
 
 Modal::Modal(String title, RectangleBox rectangle, Color color, Graphics* graphics) : Control(rectangle, color, graphics)
 {

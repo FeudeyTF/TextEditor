@@ -1,7 +1,7 @@
 #pragma once
-#include "../Modal.h"
-#include "../Elements/Button.h"
-#include "../Elements/Input.h"
+#include "../Modal.hpp"
+#include "../Elements/Button.hpp"
+#include "../Elements/Input.hpp"
 
 class InputModal : public Modal
 {

@@ -1,4 +1,4 @@
-#include "Point.h"
+#include "Point.hpp"
 
 Point::operator COORD()
 {

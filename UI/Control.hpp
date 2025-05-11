@@ -2,10 +2,10 @@
 #include <iostream>
 #include <string>
 #include <windows.h>
-#include "../Event/Event.h"
-#include "EventArgs/MouseEventArgs.h"
-#include "EventArgs/KeyEventArgs.h"
-#include "Graphics/Graphics.h"
+#include "../Event/Event.hpp"
+#include "EventArgs/MouseEventArgs.hpp"
+#include "EventArgs/KeyEventArgs.hpp"
+#include "Graphics/Graphics.hpp"
 
 using namespace std;
 

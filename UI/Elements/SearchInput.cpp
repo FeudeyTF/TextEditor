@@ -1,4 +1,4 @@
-#include "SearchInput.h"
+#include "SearchInput.hpp"
 
 SearchInput::SearchInput(RectangleBox rectangle, Color color, Graphics* graphics) : Input(rectangle, color, graphics)
 {

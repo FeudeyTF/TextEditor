@@ -1,8 +1,8 @@
 #pragma once
 #include <windows.h>
-#include "Rectangle.h"
-#include "Point.h"
-#include "Color.h"
+#include "Rectangle.hpp"
+#include "Point.hpp"
+#include "Color.hpp"
 #include <string>
 
 using namespace std;

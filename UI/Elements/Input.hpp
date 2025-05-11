@@ -1,5 +1,5 @@
 #pragma once
-#include "../Control.h"
+#include "../Control.hpp"
 
 #define LEFT_ARROW_KEY 37
 #define UP_ARROW_KEY 38

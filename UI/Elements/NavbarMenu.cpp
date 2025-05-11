@@ -1,4 +1,4 @@
-#include "NavbarMenu.h"
+#include "NavbarMenu.hpp"
 
 NavbarMenu::NavbarMenu(RectangleBox rectangle, Color color, vector<Button*> buttons, vector<DropdownMenu*> menus, Graphics* graphics) : Control(rectangle, color, graphics)
 {
