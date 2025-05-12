@@ -58,6 +58,8 @@ Control* Control::HandleMouseEvent(MouseEventArgs args)
 			}
 		}
 		break;
+		default:
+			return nullptr;
 	}
 	return nullptr;
 }
