@@ -60,16 +60,16 @@ void Graphics::DrawBox(RectangleBox rectangle, RectangleBox maxRectangle, Color 
 		if (i == y)
 		{
 			DrawLine(intersection.X, i, intersection.Width,
-				intersection.X <= x ? L'╔' : -1,
-				intersection.X + intersection.Width >= x + width ? L'╗' : -1,
+				intersection.X <= x ? L'╔' : L' ',
+				intersection.X + intersection.Width >= x + width ? L'╗' : L'\0',
 				L'═',
 				color);
 		}
 		else if (i == y + height - 1)
 		{
 			DrawLine(intersection.X, i, intersection.Width,
-				intersection.X <= x ? L'╚' : -1,
-				intersection.X + intersection.Width >= x + width ? L'╝' : -1,
+				intersection.X <= x ? L'╚' : L' ',
+				intersection.X + intersection.Width >= x + width ? L'╝' : L'\0',
 				L'═',
 				color);
 		}
@@ -77,8 +77,8 @@ void Graphics::DrawBox(RectangleBox rectangle, RectangleBox maxRectangle, Color 
 		{
 			DrawLine(intersection.X, i, intersection.Width,
 				intersection.X <= x ? L'║' : -1,
-				intersection.X + intersection.Width >= x + width ? L'║' : -1,
-				fill ? L' ' : -1,
+				intersection.X + intersection.Width >= x + width ? L'║' : L'\0',
+				fill ? L' ' : L'\0',
 				color);
 		}
 	}
@@ -89,9 +89,9 @@ void Graphics::DrawLine(int x, int y, int width, Char start, Char end, Char mid,
 	for (int i = x; i < x + width; i++)
 	{
 		Char c = mid;
-		if (i == x && start != -1)
+		if (i == x && start != L'\0')
 			c = start;
-		if (i == x + width - 1 && end != -1)
+		if (i == x + width - 1 && start !=  L'\0')
 			c = end;
 		SetChar(i, y, c, color);
 	}
