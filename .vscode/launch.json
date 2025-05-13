@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C++ Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin//Debug/TextEditor.exe",
+            "stopAtEntry": false,
+            "customLaunchSetupCommands": [
+                {
+                    "text": "target-run",
+                    "description": "run target",
+                    "ignoreFailures": false
+                }
+            ],
+            "cwd": "${workspaceFolder}",
+            "launchCompleteCommand": "exec-run",
+            "linux": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "/usr/bin/gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "C:\\msys64\\usr\\bin\\gdb.exe"
+            }
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: clang++.exe build active file",
+            "command": "clang++",
+            "args": [
+                "-fcolor-diagnostics",
+                "-fansi-escape-codes",
+                "-g",
+                "Program.cpp",
+                "Event/*.cpp",
+                "UI/Elements/*.cpp",
+                "UI/EventArgs/*.cpp",
+                "UI/Forms/*.cpp",
+                "UI/Graphics/*.cpp",
+                "UI/Modals/*.cpp",
+                "UI/*.cpp",
+                "-o",
+                "bin/Debug/TextEditor.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ],
+    "version": "2.0.0"
+}
