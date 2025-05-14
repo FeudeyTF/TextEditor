@@ -91,7 +91,7 @@ void Graphics::DrawLine(int x, int y, int width, Char start, Char end, Char mid,
 		Char c = mid;
 		if (i == x && start != L'\0')
 			c = start;
-		if (i == x + width - 1 && start !=  L'\0')
+		if (i == x + width - 1 && end !=  L'\0')
 			c = end;
 		SetChar(i, y, c, color);
 	}
@@ -102,7 +102,7 @@ void Graphics::CreateText(int x, int y, RectangleBox rectangle, String text, Col
 	if (!rectangle.Contains(x, y))
 		return;
 
-	Point coords = { x,  y};
+	Point coords = { x,  y };
 	for (int i = 0; i < text.size(); i++)
 	{
 		if (text[i] == L'\n')
