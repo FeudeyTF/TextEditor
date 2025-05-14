@@ -17,7 +17,8 @@
                 "UI/Modals/*.cpp",
                 "UI/*.cpp",
                 "-o",
-                "bin/Debug/TextEditor.exe"
+                "bin/Debug/TextEditor.exe",
+                "-std=c++20"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
